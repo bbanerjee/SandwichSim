@@ -1,0 +1,210 @@
+! Floor support test case
+/title, Floor support
+/filname, floorSupp, on
+
+!---------------------------------------------
+! Geometry parameters
+!
+h1 = 1.65
+h2 = 1.0
+h3 = 0.04
+h4 = 0.2554
+h5 = 0.215
+h6 = 0.68
+h7 = 0.845
+h8 = h1 - h6
+h9 = h8 - h7
+fil = h9
+
+v1 = 0.14
+v2 = 0.7
+v3 = 0.53
+v4 = 0.3
+v5 = 0.3402
+v6 = v5 + h9
+v7 = v3 - v6
+
+x1 = -h2
+x2 = 0
+x3 = 0
+x4 = -(h6 - h4)
+x5 = x4
+x6 = -h5
+x7 = x6
+x8 = -h6
+x9 = x8
+x10 = -h1
+x11 = x10
+x12 = -h3
+x13 = x12
+x14 = x1
+
+y1 = 0
+y2 = 0
+y3 = v2 + v3 - v4
+y4 = y3
+y7 = v2 + v3
+y5 = y4 + (y7 - y4)/3
+y6 = y4 + (y7 - y4)*2/3
+y8 = y7
+y9 = y8 - v6
+y10 = y9
+y11 = y10 - v7
+y12 = y11
+y13 = v1
+y14 = y13
+
+!---------------------------------------------
+! Material parameters
+!
+E_foot = 10400e3
+nu_foot = 0.33
+
+!---------------------------------------------
+! Mesh parameters
+!
+! el_size = 0.01*h1
+! vlen = 25*2*h1
+! vndiv = vlen/el_size
+el_size = 0.03*h1
+vlen = 15*h1
+vndiv = 100
+
+!----------------------------------------------
+! Section and Element types
+!
+type_foot = 1
+sec_foot = 1
+mat_foot = 1
+type_vfoot = 2
+
+/prep7
+
+!----------------------------------------------
+! Set up keypoints
+!
+k, 1, x1, y1
+k, 2, x2, y2
+k, 3, x3, y3
+k, 4, x4, y4
+k, 5, x5, y5
+k, 6, x6, y6
+k, 7, x7, y7
+k, 8, x8, y8
+k, 9, x9, y9
+k, 10, x10, y10
+k, 11, x11, y11
+k, 12, x12, y12
+k, 13, x13, y13
+k, 14, x14, y14
+
+!----------------------------------------------
+! Set up lines
+!
+l, 1, 2
+l, 2, 3
+l, 3, 4
+l, 4, 5
+l, 5, 6
+l, 6, 7
+l, 7, 8
+l, 8, 9
+l, 9, 10
+l, 10, 11
+l, 11, 12
+l, 12, 13
+l, 13, 14
+l, 14, 1
+
+!----------------------------------------------
+! Add fillets
+!
+numstr, line, 15
+lfillt, 3, 4, fil/5
+lfillt, 4, 5, fil/3
+lfillt, 5, 6, fil/3
+lfillt, 6, 7, fil/3
+lfillt, 7, 8, fil
+lfillt, 8, 9, fil
+lfillt, 11, 12, fil
+lfillt, 12, 13, fil
+
+!-------------------------------------------
+! Create area
+!
+al, all
+
+!-----------------------------------------------
+! Element types
+!
+et, type_foot, plane183
+keyopt, type_foot, 3, 2  ! plane strain
+r, real_foot
+et, type_vfoot, solid186
+keyopt, type_vfoot, 3, 0  ! plane strain
+r, real_foot
+
+!-----------------------------------------------
+! Material properties
+!
+mp, ex, mat_foot, E_foot
+mp, prxy, mat_foot, nu_foot
+
+!---------------------------------------------
+! Mesh lines
+!
+type, type_foot
+lesize, all, el_size
+amesh, all
+
+!---------------------------------------------
+! Reflect mesh
+!
+arsym, x, all
+numcmp, all
+
+!---------------------------------------------
+! Sweep volume
+!
+type, type_vfoot
+esize, , vndiv
+vext, all, , , , , vlen
+
+!---------------------------------------------
+! Symmetry boundary conditions at z = 0
+!
+seltol, 1.0e-6
+nsel, s, loc, z, 0
+d, all, uz, 0
+
+!---------------------------------------------
+! Symmetry boundary conditions at x = 0
+!
+nsel, s, loc, x, 0
+d, all, ux, 0
+
+!--------------------------------------------
+! Fix one uy to avoid rigid body motion
+!
+nsel, s, loc, z, 0
+nsel, r, loc, y, 0
+d, all, uy, 0
+
+!--------------------------------------------
+! Apply moment load at z = vlen
+!
+nsel, s, loc, z, vlen
+M_max = 9160
+yc = 6.3646e-01
+Ixx = 1.5429e-01
+alpha = M_max/Ixx
+sfgrad, pres, 0, y, yc, alpha
+sf, all, pres, 0
+
+allsel
+save, floorSupp, db
+finish
+
+
+
+

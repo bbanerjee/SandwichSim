@@ -1,0 +1,36 @@
+!
+! Resume the run
+!
+resume,'./rectSolShRun','db','',,
+/filname, rectSolShRun, 0
+!/psearch, '/tmp/banerjee/Altitude'
+
+/prep7
+finish
+
+!--------------------------------------------
+! Solve
+!
+!/solu
+!antype, static
+!outres, all
+!outpr, all, 1
+!solve
+!finish
+
+!--------------------------------------------
+! Postprocess
+!
+/post1
+esel, s, type, , type_shell 
+nsle, s
+set, last
+layer, 1
+shell, top
+rectsoldatx, 'rectSolShTopUSigX.dat', h_shell
+rectsoldaty, 'rectSolShTopUSigY.dat', h_shell
+shell, bot
+rectsoldatx, 'rectSolShBotUSigX.dat', 0
+rectsoldaty, 'rectSolShBotUSigY.dat', 0
+finish
+

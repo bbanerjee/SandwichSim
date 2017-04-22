@@ -1,0 +1,57 @@
+/uis, msgpop, 3
+
+fileName = arg1
+
+! Create element table for the quantities of interest
+etable, sx, s, x
+etable, sy, s, y
+etable, sz, s, z
+etable, sxy, s, xy
+etable, syz, s, yz
+etable, szx, s, xz
+
+! Get the list of elements of interest
+!
+csys, 1
+nsel, s, loc, x, 0, r_panel
+nsel, r, loc, y, 0
+esln, s 
+*get, num_elem, elem, 0, count
+*dim, elem_list, , num_elem
+*get, cur_elem, elem, 0, num, min
+elem_list(1) = cur_elem
+*do, ii, 2, num_elem
+  *get, cur_elem, elem, cur_elem, nxth
+  elem_list(ii) = cur_elem
+*enddo
+allsel
+
+! Open a file to write the results
+!
+*cfopen, fileName
+
+! Get the data and write to file
+!
+*do, ii, 1, num_elem
+  elem_1 = elem_list(ii)
+
+  ! Get the coordinates of the centroid of the element
+  *get, xloc, elem, elem_1, cent, x
+  *get, yloc, elem, elem_1, cent, y
+  *get, zloc, elem, elem_1, cent, z
+
+  ! Get the element stresses
+  *get, sx, etab, 1, elem, elem_1
+  *get, sy, etab, 2, elem, elem_1
+  *get, sz, etab, 3, elem, elem_1
+  *get, sxy, etab, 4, elem, elem_1
+  *get, syz, etab, 5, elem, elem_1
+  *get, szx, etab, 6, elem, elem_1
+
+  ! Write the data
+  *vwrite, elem_1, xloc, yloc, zloc, sx, sy, sz, sxy, syz, szx
+  (f5.0,1x,e11.5,1x,e11.5,1x,e11.5,1x,e11.5,1x,e11.5,1x,e11.5,1x,e11.5,1x,e11.5,1x,e11.5)
+*enddo
+*cfclose
+allsel
+

@@ -1,0 +1,115 @@
+/title, Rectangular solid shell
+/filname, rectSoldSh, on
+
+!---------------------------------------------
+! Geometry parameters
+!
+a_shell = 1.0e-2
+b_shell = 2.0e-2
+h_shell = a_shell/25
+
+!---------------------------------------------
+! Material parameters
+!
+E_shell = 70e9
+nu_shell = 0.35
+
+!---------------------------------------------
+! Mesh parameters
+!
+!el_size = 0.02*a_shell
+el_size = 0.5*0.1*a_shell
+
+!----------------------------------------------
+! Section and Element types
+!
+sec_shell = 1
+type_shell = 1
+real_shell = 1
+mat_shell = 1
+type_dummy = 2
+real_dummy = 2
+
+/prep7
+
+!-----------------------------------------------
+! Create geometry
+!
+k, 1, 0, 0, 0
+rect, 0, a_shell, 0, b_shell
+rect, 0, a_shell, -b_shell, 0
+rect, -a_shell, 0, 0, b_shell
+rect, -a_shell, 0, -b_shell, 0
+aglue, all
+
+!-----------------------------------------------
+! Section types and data
+!
+sectype, sec_shell, shell, , sec_shell
+secdata, h_shell, mat_shell, 0.0, 3, shell_lay
+
+!-----------------------------------------------
+! Element types
+!
+et, type_shell, solsh190
+keyopt, type_shell, 8, 1
+et, type_dummy, shell181
+r, real_shell
+r, real_dummy, h_shell
+
+!-----------------------------------------------
+! Material properties
+!
+mp, ex, mat_shell, E_shell
+mp, prxy, mat_shell, nu_shell
+
+!---------------------------------------------
+! Mesh lines
+!
+type, type_dummy
+lesize, all, el_size
+amesh, all
+numcmp, area
+
+!---------------------------------------------
+! Extrude volume
+!
+type, type_shell
+secnum, sec_shell
+extopt, aclear, 1   ! Clear area after volume is generated
+esize, , 1
+voffset, 1, h_shell
+voffset, 2, h_shell
+voffset, 3, h_shell
+voffset, 4, h_shell
+!vglue, all
+nummrg, node
+
+!---------------------------------------------
+! Dirichlet Boundary conditions
+!  (simply supported)
+!
+csys, 0
+seltol, 1.0e-6
+nsel, s, loc, x, a_shell 
+nsel, a, loc, x, -a_shell 
+nsel, a, loc, y, b_shell 
+nsel, a, loc, y, -b_shell 
+d, all, uz, 0
+nsel, s, loc, x, 0
+d, all, ux, 0
+nsel, s, loc, y, 0
+d, all, uy, 0
+allsel
+
+!---------------------------------------------
+! Uniform pressure BC
+!
+asel, s, loc, z, h_shell
+sfa, all, 1, pres, 10000
+sftran
+allsel
+
+save, rectSolSh, db
+finish
+

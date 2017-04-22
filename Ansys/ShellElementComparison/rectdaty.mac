@@ -1,0 +1,51 @@
+/uis, msgpop, 3
+
+fileName = arg1
+
+! Get the list of nodes of interest
+!
+nsel, s, loc, y, -b_shell, b_shell
+nsel, r, loc, x, 0 
+*get, num_node, node, 0, count
+*dim, node_list, , num_node
+*get, cur_node, node, 0, num, min
+node_list(1) = cur_node
+*do, ii, 2, num_node
+  *get, cur_node, node, cur_node, nxth
+  node_list(ii) = cur_node
+*enddo
+
+! Open a file to write the results
+!
+*cfopen, fileName
+
+! Get the data and write to file
+!
+*do, ii, 1, num_node
+  node_1 = node_list(ii)
+
+  ! Get the coordinates of the node
+  *get, xloc, node, node_1, loc, x
+  *get, yloc, node, node_1, loc, y
+  *get, zloc, node, node_1, loc, z
+
+  ! Get the displacements of the node
+  *get, ux, node, node_1, u, x
+  *get, uy, node, node_1, u, y
+  *get, uz, node, node_1, u, z
+
+  ! Get the nodal stresses
+  *get, sx, node, node_1, s, x
+  *get, sy, node, node_1, s, y
+  *get, sz, node, node_1, s, z
+  *get, sxy, node, node_1, s, xy
+  *get, syz, node, node_1, s, yz
+  *get, szx, node, node_1, s, xz
+
+  ! Write the data
+  *vwrite, node_1, xloc, yloc, zloc, ux, uy, uz, sx, sy, sz, sxy, syz, szx
+  (f6.0,1x,e11.5,1x,e11.5,1x,e11.5,1x,e11.5,1x,e11.5,1x,e11.5,1x,e11.5,1x,e11.5,1x,e11.5,1x,e11.5,1x,e11.5,1x,e11.5)
+*enddo
+*cfclose
+allsel
+

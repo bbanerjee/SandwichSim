@@ -1,0 +1,110 @@
+/title, Rectangular Plate Deflection with SHELL181 under Uniform Load (Fine Mesh)
+/units, SI
+
+exx=200e9				! Young's modulus
+poisson=0.27			! Poisson's ratio
+length=1				! Length of rectangular plate
+width=length			! Width of rectangular plate
+thick=length/25			! Thickness of plate
+
+/prep7
+et,1,shell181		! Select shell181 element
+mp,ex,1,exx			! Young's modulus for material 1
+mp,nuxy,1,poisson	! Poisson's ratio for material 1
+
+rectng,0,length,0,width		! Create rectangular area
+
+sectype,1,shell,,,0
+secdata,thick,1,0,3,	! Define shell thickness
+
+! Generate area mesh
+
+type,1				! Select element type 1 for meshing
+lsel,s,line,,1,4
+lesize,all,,,100	! Divide lines into 100 elements for fine mesh
+allsel,all
+amesh,all			! Mesh all areas
+
+finish
+
+! Apply loads and obtain solution
+
+/solu
+antype,static
+
+! Simply supported condition
+lsel,s,line,,1,4
+dl,all,,uz,0
+allsel,all
+nsel,s,loc,x,length/2
+dsym,symm,x,0
+allsel,all
+nsel,s,loc,y,width/2
+dsym,symm,y,0
+allsel,all
+
+! Uniform pressure load
+sfa,all,1,pres,-100000	! Apply pressure load
+
+solve
+
+finish
+
+! Review results
+
+/post 1
+set,1
+
+/title, Deformation
+pldisp,1
+
+! Output results
+
+nsel,s,loc,y,0.5
+
+*get,nodemin,node,0,num,min
+*get,nodemax,node,0,num,max
+*get,numnodes,node,0,count
+*dim,noderes,array,numnodes,12
+
+j=1
+*do,i,nodemin,nodemax
+	*if,nsel(i),eq,1,then
+		shell,bot						! Results from bottom of element
+		*get,nodexloc,node,i,loc,x
+		*get,nodedisp,node,i,u,z
+		*get,nodestressx,node,i,s,x
+		*get,nodestressy,node,i,s,y
+		noderes(j,1) = nodexloc
+		noderes(j,2) = nodedisp
+		noderes(j,3) = nodestressx
+		noderes(j,4) = nodestressy
+		shell,mid						! Results from middle of element
+		*get,nodexloc,node,i,loc,x
+		*get,nodedisp,node,i,u,z
+		*get,nodestressx,node,i,s,x
+		*get,nodestressy,node,i,s,y
+		noderes(j,5) = nodexloc
+		noderes(j,6) = nodedisp
+		noderes(j,7) = nodestressx
+		noderes(j,8) = nodestressy
+		shell,top						! Results from top of element
+		*get,nodexloc,node,i,loc,x
+		*get,nodedisp,node,i,u,z
+		*get,nodestressx,node,i,s,x
+		*get,nodestressy,node,i,s,y
+		noderes(j,9) = nodexloc
+		noderes(j,10) = nodedisp
+		noderes(j,11) = nodestressx
+		noderes(j,12) = nodestressy
+		j=j+1
+	*endif
+*enddo
+
+allsel,all
+
+*mwrite,noderes,result_rectshell_unipres_fine,dat
+(12ES15.6E3)
+
+finish
+/eof

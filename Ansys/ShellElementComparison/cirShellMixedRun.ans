@@ -1,0 +1,27 @@
+!
+! Resume the run
+!
+resume,'cirShellMixed','db','',,
+/filname, cirShellMixedRun, 0
+
+/prep7
+finish
+
+!--------------------------------------------
+! Solve
+!
+/solu
+antype, static
+
+!---------------------------------------------
+! Force Boundary conditions
+!
+!csys, 1
+!nsel, s, loc, x, 0.0, a_shell
+!sf, all, pres, -1000
+!allsel
+
+!outres, all
+!outpr, all, 1
+solve
+finish

@@ -1,0 +1,223 @@
+/title, Axisymmetric sandwich shell with insert
+/filname, axishell, on
+
+!---------------------------------------------
+! Geometry parameters
+!
+r_ins = 7.125e-3
+r_pot = 10.0e-3
+r_panel = 25.4e-3
+t_core = 25.4e-3
+t_pot = 0.5*t_core
+t_ins = t_core-t_pot
+f_top = 0.508e-3
+f_bot = 0.508e-3
+area_ins = 3.14159*r_ins*r_ins
+
+!---------------------------------------------
+! Material parameters
+!
+E_ins = 70e9
+nu_ins = 0.35
+!
+E_pot = 890e6
+G_pot = 340e6
+nu_pot = E_pot/(2*G_pot) - 1.0
+!
+E11_face = 17.3e9
+E22_face = 17.3e9
+E33_face = 3.24e9
+G12_face = 6.7e9
+G23_face = 1.2e9
+G31_face = 1.2e9
+nu13_face = 0.32
+nu12_face = E11_face/(2*G12_face)-1
+nu21_face = nu12_face*E22_face/E11_face
+nu31_face = nu13_face*E33_face/E11_face
+nu32_face = nu31_face
+nu23_face = nu32_face*E22_face/E33_face
+!
+E11_core = 0.408e6
+E22_core = 0.408e6
+E33_core = 132e6
+G12_core = 4.55e6
+G23_core = 32.75e6
+G31_core = 32.75e6
+nu13_core = 0.01
+nu31_core = nu13_core*E33_core/E11_core
+nu12_core = 0.49
+nu21_core = nu12_core*E22_core/E11_core
+nu23_core = 0.01
+nu32_core = nu23_core*E33_core/E22_core
+
+!----------------------------------------------
+! Section and Element types
+!
+sec_ins = 1
+sec_pot = 2
+sec_core = 3
+type_ins = 1
+type_pot = 2
+type_core = 3
+real_ins = 1
+real_pot = 2
+real_core = 3
+mat_ins = 1
+mat_pot = 2
+mat_core = 3
+mat_face = 4
+
+/prep7
+
+!-----------------------------------------------
+! Create geometry
+!
+k, 1, 0, 0
+k, 2, r_ins, 0
+k, 3, r_pot, 0
+k, 4, r_panel, 0
+!
+l, 1, 2
+l, 2, 3
+l, 3, 4
+
+!-----------------------------------------------
+! Section types and data
+!
+sectype, sec_ins, shell, , sec_ins
+secdata, f_bot, mat_ins, 0.0, 3, ins_bot
+secdata, t_pot, mat_ins, 0.0, 3, ins_pot
+secdata, t_ins, mat_ins, 0.0, 3, ins_ins
+secdata, f_top, mat_ins, 0.0, 3, ins_top
+!
+sectype, sec_pot, shell, , sec_pot
+secdata, f_bot, mat_face, 0.0, 3, pot_bot
+secdata, t_pot, mat_pot, 0.0, 3, pot_pot
+secdata, t_ins, mat_pot, 0.0, 3, pot_ins
+secdata, f_top, mat_face, 0.0, 3, pot_top
+!
+sectype, sec_core, shell, , sec_core
+secdata, f_bot, mat_face, 0.0, 3, core_bot
+secdata, t_pot, mat_core, 0.0, 3, core_pot
+secdata, t_ins, mat_core, 0.0, 3, core_ins
+secdata, f_top, mat_face, 0.0, 3, core_top
+
+!-----------------------------------------------
+! Element types
+!
+et, type_ins, shell208
+keyopt, type_ins, 8, 2
+r, real_ins
+et, type_pot, shell208
+keyopt, type_pot, 8, 2
+r, real_pot
+et, type_core, shell208
+keyopt, type_core, 8, 2
+r, real_core
+
+!-----------------------------------------------
+! Material properties
+!
+mp, ex,   mat_face, E11_face
+mp, ey,   mat_face, E22_face
+mp, ez,   mat_face, E33_face
+mp, prxy, mat_face, nu12_face
+mp, pryz, mat_face, nu23_face
+mp, prxz, mat_face, nu13_face
+mp, gxy,  mat_face, G12_face
+mp, gyz,  mat_face, G23_face
+mp, gxz,  mat_face, G31_face
+!
+mp, ex,   mat_core, E11_core
+mp, ey,   mat_core, E22_core
+mp, ez,   mat_core, E33_core
+!mp, nuxy, mat_core, nu12_core
+!mp, nuyz, mat_core, nu32_core
+!mp, nuxz, mat_core, nu31_core
+mp, prxy, mat_core, nu12_core
+mp, pryz, mat_core, nu23_core
+mp, prxz, mat_core, nu13_core
+mp, gxy,  mat_core, G12_core
+mp, gyz,  mat_core, G23_core
+mp, gxz,  mat_core, G31_core
+!
+mp, ex, mat_ins, E_ins
+mp, prxy, mat_ins, nu_ins
+!
+mp, ex, mat_pot, E_pot
+mp, prxy, mat_pot, nu_pot
+
+!---------------------------------------------
+! Mesh lines
+!
+lesize, all, 0.05*f_bot
+type, type_ins
+secnum, sec_ins
+lmesh, 1
+type, type_pot
+secnum, sec_pot
+lmesh, 2
+type, type_core
+secnum, sec_core
+lmesh, 3
+
+!---------------------------------------------
+! Dirichlet Boundary conditions
+!
+seltol, 1.0e-6
+nsel, s, loc, x, 0.0
+d, all, ux, 0
+d, all, rotz, 0
+
+nsel, s, loc, x, r_panel
+d, all, uy, 0
+d, all, rotz, 0
+
+allsel
+finish
+
+!--------------------------------------------
+! Solve
+!
+/solu
+antype, static
+
+!---------------------------------------------
+! Force Boundary conditions
+!
+nsel, s, loc, x, 0.0, r_ins
+sf, all, pres, -1000/area_ins
+allsel
+
+outres, all
+outpr, all, 1
+solve
+finish
+
+!--------------------------------------------
+! Postprocess
+!
+/post1
+layer, 1
+shell, top
+plnsol, u, y
+
+writedat, 'layer1mid.dat'
+writeel, 'layer1midel.dat'
+
+layer, 2
+shell, mid
+writedat, 'layer2mid.dat'
+writeel, 'layer2midel.dat'
+
+layer, 3
+shell, mid
+writedat, 'layer3mid.dat'
+writeel, 'layer3midel.dat'
+
+layer, 4
+shell, bot
+writedat, 'layer4mid.dat'
+writeel, 'layer4midel.dat'
+
+finish

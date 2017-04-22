@@ -1,0 +1,134 @@
+/title, Circular shell
+/filname, circShell, on
+
+!---------------------------------------------
+! Geometry parameters
+!
+a_shell = 1.0e-2
+h_shell = 5.0e-4
+
+!---------------------------------------------
+! Material parameters
+!
+E_shell = 70e9
+nu_shell = 0.35
+
+!---------------------------------------------
+! Mesh parameters
+!
+!el_size = 0.1*a_shell
+el_size = 0.5*0.1*a_shell
+
+!----------------------------------------------
+! Section and Element types
+!
+sec_shell = 1
+type_shell = 1
+real_shell = 1
+mat_shell = 1
+
+/prep7
+
+!-----------------------------------------------
+! Create geometry
+!
+k, 1, 0, 0, 0
+cyl4, 0, 0, a_shell, 0, , 90
+cyl4, 0, 0, a_shell, 90, , 180
+cyl4, 0, 0, a_shell, 180, , 270
+cyl4, 0, 0, a_shell, 270, , 360
+aglue, all
+
+!-----------------------------------------------
+! Section types and data
+!
+sectype, sec_shell, shell, , sec_shell
+secdata, h_shell, mat_shell, 0.0, 3, shell_lay
+
+!-----------------------------------------------
+! Element types
+!
+!et, type_shell, shell281
+!keyopt, type_shell, 8, 2
+et, type_shell, shell181
+keyopt, type_shell, 8, 2
+r, real_shell
+
+!-----------------------------------------------
+! Material properties
+!
+mp, ex, mat_shell, E_shell
+mp, prxy, mat_shell, nu_shell
+
+!---------------------------------------------
+! Mesh lines
+!
+type, type_shell
+secnum, sec_shell
+lesize, all, el_size
+amesh, all
+
+!---------------------------------------------
+! Dirichlet Boundary conditions
+!
+csys, 1
+seltol, 1.0e-6
+nsel, s, loc, x, a_shell 
+d, all, ux, 0
+d, all, uy, 0
+d, all, uz, 0
+d, all, rotx, 0
+d, all, roty, 0
+d, all, rotz, 0
+nsel, s, loc, x, 0
+d, all, ux, 0
+d, all, uy, 0
+
+!---------------------------------------------
+! Force Boundary conditions
+!
+nsel, s, loc, x, 0.0, a_shell
+sf, all, pres, -1000
+allsel
+
+save, circShell, db
+finish
+
+!--------------------------------------------
+! Solve
+!
+!/solu
+!antype, static
+!
+!outres, all
+!outpr, all, 1
+!solve
+!finish
+
+!--------------------------------------------
+! Postprocess
+!
+!/post1
+!layer, 1
+!shell, top
+!plnsol, u, y
+!
+!writedats, 'layer1mids.dat'
+!writeels, 'layer1midsel.dat'
+!
+!layer, 2
+!shell, mid
+!writedats, 'layer2mids.dat'
+!writeels, 'layer2midsel.dat'
+!
+!layer, 3
+!shell, mid
+!writedats, 'layer3mids.dat'
+!writeels, 'layer3midsel.dat'
+!
+!layer, 4
+!shell, bot
+!writedats, 'layer4mids.dat'
+!writeels, 'layer4midsel.dat'
+!
+!finish

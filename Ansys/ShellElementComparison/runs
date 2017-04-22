@@ -1,0 +1,21 @@
+#/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < circShell.ans > circShell.out 2>& 1
+#/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < circShellRun.ans > circShellRun.out 2>& 1
+#/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < cirShellSol.ans > cirShellSol.out 2>& 1
+#/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < cirShellSolRun.ans > cirShellSolRun.out 2>& 1
+#/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < cirShellHalf.ans > cirShellHalf.out 2>& 1
+#/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < cirShellHalfRun.ans > cirShellHalfRun.out 2>& 1
+#/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < cirShellMixed.ans > cirShellMixed.out 2>& 1
+#/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < cirShellMixedRun.ans > cirShellMixedRun.out 2>& 1
+#/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < circSolShMom.ans > circSolShMom.out 2>& 1
+#/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < circSolShMomRun.ans > circSolShMomRun.out 2>& 1
+#
+#/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j rectShell < ./rectShell.ans > rectShell.out 2>& 1
+#/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j rectShellRun < ./rectShellRun.ans > rectShellRun.out 2>& 1
+#/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j rectShellPost < ./rectShellPost.ans > rectShellPost.out 2>& 1
+#
+#/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j rectSolSh < ./rectSolSh.ans > rectSolSh.out 2>& 1
+#/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j rectSolShRun < ./rectSolShRun.ans > rectSolShRun.out 2>& 1
+#/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j rectSolShPost < ./rectSolShPost.ans > rectSolShPost.out 2>& 1
+#
+/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j floorSupp < ./floorSupp.ans > floorSupp.out 2>& 1
+/usr/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j floorSuppRun < ./floorSuppRun.ans > floorSuppRun.out 2>& 1
