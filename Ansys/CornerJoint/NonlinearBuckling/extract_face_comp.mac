@@ -1,0 +1,101 @@
+! Extract stresses in face compression as afunction of time
+!
+/post1
+/uis, msgpop, 3
+
+!----------------------------------------------------------------
+! Open the results file and a file for writing results
+!----------------------------------------------------------------
+! file,'run_bra_axial_nlbuck_b','rst','.'  
+! *cfopen, AxNLBuck_b_FaceC, dat
+file,'run_bra_mom_nlbuck_b','rst','.'  
+*cfopen, MomNLBuck_b_FaceC, dat
+!file,'run_bra_trans_nlbuck_b','rst','.'  
+!*cfopen, TrNLBuck_b_FaceC, dat
+
+!----------------------------------------------------------------
+! Choose the last set
+!----------------------------------------------------------------
+allsel
+set, last
+set, prev
+
+!----------------------------------------------------------------
+! Select nodes in the face area, sort, select max stress elem, 
+! and create a component
+!----------------------------------------------------------------
+esel, s, mat, , mat_face
+etable, stressAll, s, x
+esort, etab, stressAll
+*get, minElem, sort, 0, imin
+esel, r, elem, , minElem
+
+cm, elem_face, elem
+*get, numElem, elem, 0, count
+*get, minElem, elem, 0, num, min
+
+!----------------------------------------------------------------
+! Choose the first set
+!----------------------------------------------------------------
+allsel
+set, first
+
+!----------------------------------------------------------------
+! Create an element table
+!----------------------------------------------------------------
+cmsel, s, elem_face, elem
+etable, stress, s, x
+
+!----------------------------------------------------------------
+! Get the number of steps in the data file
+! and Loop through the steps
+!----------------------------------------------------------------
+*get, numStep, active, 0, set, nset
+
+!----------------------------------------------------------------
+! Loop through the steps
+!----------------------------------------------------------------
+*dim, sig_face, array, 1
+*do, jj, 1, numStep-1
+
+  !----------------------------------------------------------------
+  ! Get the current time
+  !----------------------------------------------------------------
+  *get, curTime, active, 0, set, time
+
+  !----------------------------------------------------------------
+  ! Save the time and number of elements
+  !----------------------------------------------------------------
+  allsel
+  cmsel, s, elem_face, elem
+  curElem = minElem
+  *do, ii, 1, numElem
+    !----------------------------------------------------------------
+    ! Read the element data
+    !----------------------------------------------------------------
+    *get, sig_face(1), elem, curElem, etab, stress
+
+    !----------------------------------------------------------------
+    ! Write the element data
+    !----------------------------------------------------------------
+    *vwrite, numElem, curElem, curTime, sig_face(1)
+    (f6.0,1x,f6.0,1x,e16.7,1x,e16.7)
+
+    !----------------------------------------------------------------
+    ! get the next element
+    !----------------------------------------------------------------
+    *get, curElem, elem, curElem, nxth
+  *enddo
+
+  !----------------------------------------------------------------
+  ! Go to next set and refill etable
+  !----------------------------------------------------------------
+  set, next
+  etable, refl
+*end do
+
+!----------------------------------------------------------------
+! Close the file
+!----------------------------------------------------------------
+*cfclose
+

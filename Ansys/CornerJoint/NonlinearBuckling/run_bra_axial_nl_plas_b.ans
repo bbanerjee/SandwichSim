@@ -1,0 +1,46 @@
+resume, ../Al_bracket_upd, db
+/filname, run_bra_axial_nl_plas_b, 0
+
+/prep7
+allsel
+insert_sigy = 300e6
+insert_hard = 500e6
+tb, bkin, mat_insert
+tbdata, 1, insert_sigy, insert_hard
+
+allsel
+finish
+
+/solu
+allsel
+antype, static
+time, 1
+nlgeom, on
+solcontrol, on
+!arclen, on
+autots, on
+lnsrch, on
+stabilize, constant
+nsubst, 1000
+neqit, 25
+nropt, full, , off
+outres, all, all
+
+!
+! Apply axial load at end
+!
+seltol, 1.0e-5
+asel, s, mat, , mat_face
+nsla, s, 1
+nsel, r, loc, x, xmax_panel+face_thick
+
+panel_thick = 2*face_thick
+!app_force  = 230855   ! 231 kN
+app_force  = 150000     ! 150 kN
+app_pres = app_force/panel_thick
+
+sf, all, pres, app_pres
+allsel
+solve
+finish
+

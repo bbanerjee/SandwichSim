@@ -1,0 +1,79 @@
+resume, ../Al_bracket_act_irr, db
+/filname, run_bra_trans_ekill_a, 0
+
+!------------------------------------------
+! First step
+!
+/solu
+
+tot_time = 1
+num_steps = 100
+time_inc = tot_time/num_steps
+max_load = 28800
+load_inc = max_load/num_steps
+
+allsel
+antype, 0
+rescontrol, define, none
+nlgeom, on
+time,   time_inc
+nropt,  full, , off
+autots, off
+lnsrch, on
+nsubst, 10
+neqit,  20
+outres, all, all
+
+!
+! Apply transverse load
+!
+seltol, 1.0e-5
+nsel, s, loc, y, ymax_panel
+nsel, r, loc, x, xbot_support, xmax_panel
+*get, numNode, node, 0, count
+load_val = load_inc/numNode
+f, all, fy, -load_val
+
+allsel
+solve
+finish
+
+/post1
+set, last
+etable, stress, s, xy
+esel, s, etab, stress, 9.65e6
+esel, r, mat, , mat_adh
+finish
+
+*do, ii, 2, num_steps
+   /solu
+   time = ii*time_inc
+   antype,, rest
+   nsubst, 10
+   neqit, 20
+   outres, all, all
+   ekill, all
+   esel, all
+   !
+   ! Apply transverse load
+   !
+   seltol, 1.0e-5
+   nsel, s, loc, y, ymax_panel
+   nsel, r, loc, x, xbot_support, xmax_panel
+   *get, numNode, node, 0, count
+   load_val = ii*load_inc/numNode
+   f, all, fy, -load_val
+
+   allsel
+   solve
+   finish
+
+   /post1
+   set, last
+   etable, stress, s, xy
+   esel, s, etab, stress, 9.65e6
+   esel, r, mat, , mat_adh
+   finish
+
+*end do
+allsel

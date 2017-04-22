@@ -1,0 +1,33 @@
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_bracket < run_Al_bracket.ans > run_Al_bracket.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_bracket_rot < run_Al_bracket_rot.ans > run_Al_bracket_rot.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_bracket_act < run_Al_bracket_act.ans > run_Al_bracket_act.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_bracket_act_nl < run_Al_bracket_act_nl.ans > run_Al_bracket_act_nl.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_bracket_4n_nl < run_Al_bracket_act_4n_nl.ans > run_Al_bracket_act_4n_nl.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_bracket_act_mom < run_Al_bracket_act_mom.ans > run_Al_bracket_act_mom.out 2>& 1
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j Al_bracket_act_axial < Al_bracket_act_axial.ans > Al_bracket_act_axial.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j Al_bracket_act_axial_med < Al_bracket_act_axial_med.ans > Al_bracket_act_axial_med.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j Al_bracket_act_mom < Al_bracket_act_mom.ans > Al_bracket_act_mom.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j Al_bracket_actual < Al_bracket_actual.ans > Al_bracket_actual.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j Al_bracket < Al_bracket.ans > Al_bracket.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j Al_bracket_rot < Al_bracket_rot.ans > Al_bracket_rot.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j Al_bracket_actual_4n < Al_bracket_actual_4n.ans > Al_bracket_actual_4n.out 2>& 1
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j Al_bracket_upd < Al_bracket_upd.ans > Al_bracket_upd.out 2>& 1
+
+#
+# Medium sized panel
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j Al_bracket_upd_med < Al_bracket_upd_med.ans > Al_bracket_upd_med.out 2>& 1
+#
+# External bracket
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j Al_bracket_ext < Al_bracket_ext.ans > Al_bracket_ext.out 2>& 1
+#
+# Half bracket
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j Al_bracket_act < Al_bracket_act.ans > Al_bracket_act.out 2>& 1
+#
+# Half bracket with coarser mesh
+#
+/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j Al_bracket_act_irr < Al_bracket_act_irr.ans > Al_bracket_act_irr.out 2>& 1

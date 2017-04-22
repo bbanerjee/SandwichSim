@@ -1,0 +1,30 @@
+resume, Al_bracket_actual_4n, db
+/filname, run_Al_Bracket_act_4n_nl, 0
+
+/prep7
+!
+! Apply displacement load
+!
+seltol, 1.0e-5
+lsel, s, loc, y, ymax_panel
+lsel, r, loc, x, xbot_support, xmax_panel
+dl, all, , uy, -0.01*top_disp_max
+allsel
+dtran  ! Transfer geometry based BCs
+finish
+
+/solu
+allsel
+antype, 0
+!nlgeom, 1
+!time, 1
+!autots, on
+!solcon, on
+!arclen, on
+!deltime, 0.001
+!nsubst, 1000
+outres, all, all
+!cnvtol, f, , , , 1.0e-6
+solve
+save, run_Al_Bracket_act_4n_nl, db
+finish

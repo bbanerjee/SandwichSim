@@ -1,0 +1,48 @@
+resume, Al_bracket_upd, db
+/filname, run_AlBracket_axial_dyna, 0
+
+/prep7
+!-----------------------------------------
+! Set max time and max load
+!-----------------------------------------
+maxTime = 0.01
+maxLoad = 2.3e5
+
+!-----------------------------------------
+! Compute nodal axial force at end
+!-----------------------------------------
+cmsel, s, end_load
+*get, numNode, node, 0, count
+load_val = maxLoad/numNode   
+
+!-----------------------------------------
+! Create load curve
+!-----------------------------------------
+*dim, lc_time, array, 3, 1, 1
+*dim, lc_load, array, 3, 1, 1
+lc_load(1,1,1)=0
+lc_load(2,1,1)=-load_val
+lc_load(3,1,1)=-load_val
+lc_time(1,1,1)=0
+lc_time(2,1,1)=0.5*maxTime
+lc_time(3,1,1)=maxTime
+
+!-----------------------------------------
+! Apply loads
+!-----------------------------------------
+edload, add, fx, 0, end_load, lc_time, lc_load, 0, , , , ,
+allsel
+finish
+
+/solu
+eddbl, 1                   ! Double precision
+time, maxTime
+eddamp, all, , 0.05        ! Damping parameter
+edrst, 100                 ! Result output interval
+edhtime, 100               ! Time history output interval
+edhist, face_sheet_nodes   ! Output locations for history
+edhist, core_nodes
+edhist, adhesive_nodes
+solve
+finish
+

@@ -1,0 +1,36 @@
+resume, run_bra_axial_nl_plas_b, db
+/filname, run_bra_axial_nl_plas_b, 0
+
+/solu
+allsel
+antype, , rest
+nlgeom, on
+autots, on
+lnsrch, auto
+!arclen, on
+solcontrol, on
+nldiag, nrre, on
+time, 2
+nsubst, 100
+neqit, 25
+nropt, full, , off
+outres, all, all
+
+!
+! Apply axial load at end
+!
+seltol, 1.0e-5
+asel, s, mat, , mat_face
+nsla, s, 1
+nsel, r, loc, x, xmax_panel+face_thick
+
+panel_thick = 2*face_thick
+!app_force  = 230855   ! 231 kN
+app_force  = 50000     ! 150 kN + 10 kN
+app_pres = app_force/panel_thick
+
+sf, all, pres, app_pres
+allsel
+solve
+finish
+

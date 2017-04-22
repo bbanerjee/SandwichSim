@@ -1,0 +1,12 @@
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j run_bra_mom_nlbuck_a.ans < run_bra_mom_nlbuck_a.ans > run_bra_mom_nlbuck_a.out 2>& 1
+/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j run_bra_axial_nlbuck_a.ans < run_bra_axial_nlbuck_a.ans > run_bra_axial_nlbuck_a.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j run_bra_trans_nlbuck_a.ans < run_bra_trans_nlbuck_a.ans > run_bra_trans_nlbuck_a.out 2>& 1
+#
+# Longer beam
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j run_bra_axial_med_nlbuck_a < run_bra_axial_med_nlbuck_a.ans > run_bra_axial_med_nlbuck_a.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j run_bra_axial_med_nlbuck_b < run_bra_axial_med_nlbuck_b.ans > run_bra_axial_med_nlbuck_b.out 2>& 1
+#
+# With plasticity
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j run_bra_axial_nl_plas_a.ans < run_bra_axial_nl_plas_a.ans > run_bra_axial_nl_plas_a.out 2>& 1

@@ -1,0 +1,38 @@
+resume, ../Al_bracket_ext, db
+/filname, run_ext_axial_linbuck_b, 0
+
+/solu
+allsel
+antype, static
+pstres, on
+
+!
+! Apply axial load at end (on face sheets)
+!
+seltol, 1.0e-5
+asel, s, mat, , mat_face
+nsla, s, 1
+nsel, r, loc, x, xmax_panel
+
+*get, numNode, node, 0, count
+load_val = 1.0/numNode   ! 1 kN
+
+f, all, fx, -load_val
+
+allsel
+solve
+finish
+
+/solu
+antype, buckle
+bucopt, lanb, 5
+solve
+finish
+
+/solu
+expass, on
+mxpand, 5, , , yes
+outres, esol, all
+solve
+finish
+

@@ -1,0 +1,566 @@
+/title, Aluminum Bracket (complete external bracket)
+/filname, Al_bracket_ext, on
+
+!----------------------------
+!  Constants
+!----------------------------
+pi = 3.1415926535897932
+theta = pi/4.0
+theta_deg = 45.0
+!d_theta_deg = 1.0
+d_theta_deg = 0.0
+d_theta = d_theta_deg/180.0*pi
+sin_theta = sin(theta)
+cos_theta = cos(theta)
+sin_dtheta = sin(theta+d_theta)
+cos_dtheta = cos(theta+d_theta)
+
+!----------------------------
+!  Geometry parameters
+!----------------------------
+insert_len = 0.0254
+panel_len = 20.0e-2 + insert_len
+face_thick = 5.08e-4
+core_thick = 0.024384
+adh_thick = 2.0e-4
+adh_thick_core = 2.0e-4
+panel_thick = 2*face_thick + core_thick
+insert_thick = face_thick
+rad_inner = 1.3e-3
+hole_wall_thick = 1.5e-3
+insert_param_0 = 1.5e-3/5
+insert_param_1 = 2.54e-3
+fillet_rad_1 = 2.3e-3
+fillet_rad_2 = 1.0e-3
+
+!----------------------------
+! Load parameters
+!----------------------------
+bot_support_loc = 2.0e-2
+top_load_loc = 2.0e-2
+top_disp_max = 1.0e-2
+
+!----------------------------
+! Material parameters and element type
+!----------------------------
+! Face sheet
+!
+type_face = 1
+real_face = 1
+mat_face = 1
+face_E11 = 17.3e9
+face_E22 = 17.3e9
+face_E33 = 3.24e9
+face_G12 = 6.7e9
+face_G23 = 1.2e9
+face_G31 = 1.2e9
+face_nu13 = 0.32
+face_nu12 = face_E11/(2*face_G12)-1
+face_nu21 = face_nu12*face_E22/face_E11
+face_nu31 = face_nu13*face_E33/face_E11
+face_nu32 = face_nu31
+face_nu23 = face_nu32*face_E22/face_E33
+!
+! Honeycomb Core
+!
+type_core = 2
+real_core = 2
+mat_core = 2
+core_E11 = 0.34e6
+core_E22 = 0.48e6
+core_E33 = 132e6
+core_G12 = 4.55e6
+core_G23 = 24.1e6
+core_G31 = 41.4e6
+core_nu13 = 0.01
+core_nu31 = core_nu13*core_E33/core_E11
+core_nu12 = 0.49
+core_nu21 = core_nu12*core_E22/core_E11
+core_nu23 = 0.01
+core_nu32 = core_nu23*core_E33/core_E22
+!
+! Aluminum insert
+!
+type_insert = 3
+real_insert = 3
+mat_insert = 3
+insert_E = 70e9
+insert_nu = 0.35
+!insert_sigy = 
+!insert_hard = 
+!
+! Adhesive layer
+!
+type_adh = 4
+real_adh = 4
+mat_adh = 4
+adh_E = 890e6
+adh_nu = 0.3
+!adh_sigy = 
+!adh_hard = 
+!
+! End cap
+!
+type_cap = 5
+real_cap = 5
+mat_cap = 5
+cap_E = 70e9
+cap_nu = 0.35
+
+/prep7
+
+!----------------------------
+! Create geometry
+!----------------------------
+ymax_panel = core_thick/2+face_thick
+ymin_panel = -ymax_panel
+xmin_panel = 0
+xmax_panel = panel_len/2
+!
+xmin_panel_adh = xmin_panel - adh_thick
+xmin_panel_ins = xmin_panel + insert_len
+!
+ymin_panel_adh = ymin_panel - adh_thick
+ymin_panel_face = ymin_panel + face_thick
+ymin_panel_face_adh = ymin_panel_face + adh_thick
+ymin_panel_adh_ins = ymin_panel_adh - insert_thick
+ymin_panel_rad = ymin_panel_adh_ins - rad_inner
+!
+ymax_panel_adh = ymax_panel + adh_thick
+ymax_panel_face = ymax_panel - face_thick
+ymax_panel_face_adh = ymax_panel_face - adh_thick
+ymax_panel_adh_ins = ymax_panel_adh + insert_thick
+!
+xbot_support = panel_len/2 - bot_support_loc
+xtop_load = insert_len/2 + top_load_loc
+!
+xmin_panel_ins_0 = xmin_panel_adh - insert_param_0
+xmin_panel_ins_1 = xmin_panel_adh - insert_param_1
+xmin_panel_ins_2 = xmin_panel_ins_1 - rad_inner
+!
+rad_outer = rad_inner + (ymax_panel_adh_ins - ymin_panel_adh_ins)
+rad_inner_thick = rad_inner + hole_wall_thick
+rad_outer_thick = rad_outer - hole_wall_thick
+r_in_cos_theta = rad_inner*cos_theta
+r_in_sin_theta = rad_inner*sin_theta
+r_out_cos_theta = rad_outer*cos_theta
+r_out_sin_theta = rad_outer*sin_theta
+r_ith_sin_theta = rad_inner_thick*sin_theta
+r_oth_sin_theta = rad_outer_thick*sin_theta
+r_ith_cos_theta = rad_inner_thick*cos_theta
+r_oth_cos_theta = rad_outer_thick*cos_theta
+
+!
+!----------------------------------------------
+! Create keypoints 
+!
+! Lower face sheet
+!
+k, 1, xmin_panel,   ymin_panel
+k, 2, xbot_support, ymin_panel
+k, 3, xmax_panel,   ymin_panel
+k, 4, xmin_panel,   ymin_panel_face
+k, 5, xmax_panel,   ymin_panel_face
+!
+! Upper face sheet
+!
+k, 6,  xmin_panel, ymax_panel
+k, 7,  xbot_support,  ymax_panel
+k, 8,  xmax_panel, ymax_panel
+k, 9,  xmin_panel, ymax_panel_face
+k, 10, xmax_panel, ymax_panel_face
+!
+! Adhesive around honeycomb core
+!
+k, 11, xmin_panel, ymin_panel_face_adh
+k, 12, xmax_panel, ymin_panel_face_adh
+k, 13, xmin_panel, ymax_panel_face_adh
+k, 14, xmax_panel, ymax_panel_face_adh
+!
+! Adhesive between insert and core
+!
+k, 15, xmin_panel_adh, ymin_panel_adh
+k, 16, xmin_panel, ymin_panel_adh
+k, 17, xmin_panel_adh, ymax_panel_adh
+k, 18, xmin_panel, ymax_panel_adh
+!
+! Adhesive between insert and facesheet
+!
+k, 19, xmin_panel_ins, ymin_panel_adh
+k, 20, xmin_panel_ins, ymin_panel
+k, 21, xmin_panel_ins, ymax_panel_adh
+k, 22, xmin_panel_ins, ymax_panel
+!
+! Insert on facesheet
+!
+k, 23, xmin_panel_ins, ymin_panel_adh_ins
+k, 24, xmin_panel_ins, ymax_panel_adh_ins
+!
+! Inner bracket arc keypoints
+!
+k, 25, xmin_panel_ins_0, ymin_panel_adh_ins  
+k, 26, xmin_panel_ins_0, ymin_panel_rad  ! center of curvature 
+k, 27, xmin_panel_ins_0-r_in_cos_theta, ymin_panel_rad+r_in_sin_theta ! inner keypoint
+!
+! Outer bracket arc keypoints
+!
+k, 28, xmin_panel_ins_0, ymax_panel_adh_ins  
+k, 29, xmin_panel_ins_0-r_out_cos_theta, ymin_panel_rad+r_out_sin_theta ! outer keypoint
+!
+! Keypoints for the quarter circle hole in the bracket
+!
+k, 30, xmin_panel_ins_0-r_ith_cos_theta, ymin_panel_rad+r_ith_sin_theta ! inner keypoint
+k, 31, xmin_panel_ins_0-r_oth_cos_theta, ymin_panel_rad+r_oth_sin_theta ! outer keypoint
+x0 = xmin_panel_ins_0
+x1 = xmin_panel_ins_0-r_ith_cos_theta
+rr = rad_outer_thick
+theta1 = acos((x0-x1)/rr)
+rr_cos_theta1 = rr*cos(theta1)
+rr_sin_theta1 = rr*sin(theta1)
+k, 32, xmin_panel_ins_0-rr_cos_theta1, ymin_panel_rad+rr_sin_theta1 ! third keypoint
+theta2 = 3.14519265/2.0
+rr_cos_theta2 = rr*cos(theta2)
+rr_sin_theta2 = rr*sin(theta2)
+k, 33, xmin_panel_ins_0-rr_cos_theta2, ymin_panel_rad+rr_sin_theta2 ! reference keypoint
+k, 34, xmax_panel+face_thick, ymin_panel
+k, 35, xmax_panel+face_thick, ymax_panel
+
+!------------------------------------------------------------------------
+! Create lines and areas
+!
+! Create area for insert (more like a ex-sert)
+!
+numstr, line, 10
+larc, 25, 27, 26, rad_inner  ! Line 10
+l, 25, 23         ! Line 11
+l, 23, 19         ! 12
+l, 19, 16         ! 13
+l, 16, 15         ! 14
+l, 15, 17         ! 15
+l, 17, 18         ! 16
+l, 18, 21         ! 17
+l, 21, 24         ! 18
+l, 24, 28         ! 19
+larc, 28, 29, 26, rad_outer  ! 20
+l, 29, 31         ! 21
+larc, 32, 31, 26, rad_outer_thick  ! 22
+l, 32, 30         ! 23
+l, 30, 27         ! 24
+numstr, area, 10
+al, all           ! Area 10
+!
+! Create a component for the symmetry edge
+!
+cskp, 11, 1, 26, 29, 33   ! A cylindrical cs
+cskp, 12, 0, 26, 29, 33   ! A cartesian cs
+!
+! Reflect the area about diagonal
+!
+numstr, area, 20
+numstr, line, 30
+csys, 12
+asel, s, area, , 10
+arsym, y, 10, , , 40, 1, 0   ! Area 20
+csys, 0
+!
+! Add the two areas
+!
+numstr, area, 21
+aadd, 10, 20                 ! Area 21
+!
+! Create fillets in the hole
+!
+numstr, line, 60
+numstr, kp, 80
+numstr, area, 25
+ksel, s, kp, , 30
+lslk, s, 0
+line1 = lsnext(0)
+line2 = lsnext(line1)
+lfillt, line1, line2, fillet_rad_1, 
+lsel, s, line, , 60, 62
+al, all                      ! Area 25
+allsel
+numstr, line, 65
+numstr, kp, 85
+ksel, s, kp, , 32
+lslk, s, 0
+line1 = lsnext(0)
+line2 = lsnext(line1)
+lfillt, line1, line2, fillet_rad_1, 
+lsel, s, line, , 65, 67
+al, all                      ! Area 26
+allsel
+numstr, line, 70
+numstr, kp, 90
+ksel, s, kp, , 72
+lslk, s, 0
+line1 = lsnext(0)
+line2 = lsnext(line1)
+lfillt, line1, line2, fillet_rad_1, 
+lsel, s, line, , 70, 72
+al, all                      ! Area 27
+allsel
+!
+! Add all the areas together
+!
+numstr, area, 28
+aadd, 21, 26
+numstr, area, 29
+aadd, 28, 25
+numstr, area, 30
+aadd, 29, 27                 ! Area 30
+!
+!  Create areas for the adhesive
+!
+numstr, kp, 100
+numstr, line, 100
+numstr, area, 40
+! !l, 15, 16  ! Line 14
+l, 16, 1   ! 100
+l, 1, 4    ! 101
+l, 4, 11   ! 102
+l, 11, 13  ! 103
+l, 13, 9   ! 104
+l, 9, 6    ! 105
+l, 6, 18   ! 106
+! !l, 18, 17  ! 16
+! !l, 17, 15  ! 15
+lsel, s, line, , 100, 109
+lsel, a, line, , 14, 16
+al, all                      ! Area 40
+allsel
+!
+numstr, line, 110
+numstr, area, 41
+! !l, 16, 19  ! Line 13
+l, 19, 20  ! 110
+l, 20, 1   ! 111
+! !l, 1, 16   ! 100
+al, 13, 110, 111, 100       ! Area 41
+!
+numstr, line, 115
+numstr, area, 42
+l, 4, 5    ! Line 115
+l, 5, 12   ! 116
+l, 12, 11  ! 117
+! !l, 11, 4  ! Line 102
+al, 115, 116, 117, 102     ! Area 42
+!
+numstr, line, 120
+numstr, area, 43
+l, 13, 14  ! Line 120
+l, 14, 10  ! 121
+l, 10, 9   ! 122
+! !l, 9, 13  ! Line 104
+al, 120, 121, 122, 104    ! Area 43
+!
+numstr, line, 125
+numstr, area, 44
+l, 6, 22  ! Line 125
+l, 22, 21 ! 126
+! !l, 21, 18  ! Line 17
+! !l, 18, 6   ! 106
+al, 125, 126, 17, 106    ! Area 44
+
+!
+! Create areas for the facesheets
+!
+numstr, line, 130
+numstr, area, 50
+! !l, 1, 20   ! Line 111
+l, 20, 2  ! 130
+l, 2, 3   ! 131
+l, 3, 5   ! 132
+! !l, 5, 4  ! Line 115
+! !l, 4, 1  ! 101
+al, 111, 130, 131, 132, 115, 101  ! Area 50
+!
+numstr, line, 135
+numstr, area, 51
+! !l, 9, 10  ! Line 122
+l, 10, 8  ! 135
+l, 8, 7   ! 136
+l, 7, 22  ! 137
+! !l, 22, 6  ! Line 125
+! !l, 6, 9   ! 105
+al, 122, 135, 136, 137, 125, 105 ! Area 51
+
+!
+! Create area for the core
+!
+numstr, line, 140
+numstr, area, 60
+l, 12, 14   ! Line 140
+al, 117, 140, 120, 103    ! Area 60
+
+!
+! Create area for the end-cap
+!
+numstr, line, 145
+numstr, area, 70
+l, 3, 34  ! Line 145
+l, 34, 35 ! 146
+l, 35, 8  ! 147
+al, 145, 146, 147, 135, 121, 140, 116, 132  ! Area 70
+allsel
+
+!----------------------------
+! Create components
+!----------------------------
+asel, s, area,, 30
+cm, insert, area
+! 
+asel, s, area,, 40, 44
+cm, adhesive, area
+! 
+asel, s, area,, 50, 51
+cm, face_sheet, area
+! 
+asel, s, area,, 60
+cm, core, area
+! 
+asel, s, area,, 70
+cm, cap, area
+allsel
+
+!----------------------------
+! Element types
+!----------------------------
+et, type_face, plane183
+keyopt, type_face, 3, 5   ! generalized plane strain
+r, real_face
+!
+et, type_core, plane183
+keyopt, type_core, 3, 5   ! generalized plane strain
+r, real_core
+!
+et, type_insert, plane183
+keyopt, type_insert, 3, 5   ! generalized plane strain
+r, real_insert
+!
+et, type_adh, plane183
+keyopt, type_adh, 3, 5   ! generalized plane strain
+r, real_adh
+!
+et, type_cap, plane183
+keyopt, type_cap, 3, 5   ! generalized plane strain
+r, real_cap
+
+!----------------------------
+! Material properties
+!----------------------------
+! Face sheets
+!
+mp, ex,   mat_face, face_E11
+mp, ey,   mat_face, face_E33
+mp, ez,   mat_face, face_E22
+mp, prxy, mat_face, face_nu13
+mp, pryz, mat_face, face_nu23
+mp, prxz, mat_face, face_nu12
+mp, gxy,  mat_face, face_G31
+mp, gyz,  mat_face, face_G23
+mp, gxz,  mat_face, face_G12
+!
+! Core
+!
+mp, ex,   mat_core, core_E11
+mp, ey,   mat_core, core_E33
+mp, ez,   mat_core, core_E22
+mp, nuxy, mat_core, core_nu13
+mp, nuyz, mat_core, core_nu23
+mp, nuxz, mat_core, core_nu12
+mp, gxy,  mat_core, core_G31
+mp, gyz,  mat_core, core_G23
+mp, gxz,  mat_core, core_G12
+!
+! Inserts
+!
+mp, ex, mat_insert, insert_E
+mp, prxy, mat_insert, insert_nu
+!
+! Adhesive
+!
+mp, ex, mat_adh, adh_E
+mp, prxy, mat_adh, adh_nu
+!
+! Cap
+!
+mp, ex, mat_cap, cap_E
+mp, prxy, mat_cap, cap_nu
+!
+!----------------------------
+! Assign material and element to areas
+!----------------------------
+cmsel, s, face_sheet
+aatt, mat_face, real_face, type_face
+cmsel, s, core
+aatt, mat_core, real_core, type_core
+cmsel, s, insert
+aatt, mat_insert, real_insert, type_insert
+cmsel, s, adhesive
+aatt, mat_adh, real_adh, type_adh
+cmsel, s, cap
+aatt, mat_cap, real_cap, type_cap
+allsel
+
+!----------------------------
+! Mesh areas
+!----------------------------
+asel, s, area, , core
+lsla, s
+lesize, all, adh_thick
+esize, adh_thick*5
+mshkey, 2
+!mopt, trans, 5.0
+!mopt, expnd, 3.0
+!mopt, amesh, alt2
+!mopt, qmesh, alternate
+amesh, core
+!
+asel, s, area, , face_sheet
+esize, adh_thick
+mshkey, 2
+mopt, trans, 1.0
+mopt, expnd, 1.0
+mopt, amesh, default
+mopt, qmesh, default
+amesh, face_sheet
+!
+asel, s, area, , insert
+esize, adh_thick
+mshkey, 0
+amesh, insert
+!
+asel, s, area, , adhesive
+esize, adh_thick
+mshkey, 2
+amesh, adhesive
+!
+asel, s, area, , cap
+esize, adh_thick
+mshkey, 2
+amesh, cap
+allsel
+
+!----------------------------
+! Nodal boundary conditions
+!----------------------------
+lsel, s, line, , 40
+nsll, s, 0
+dl, all, , uy, 0
+
+lsel, s, line, , 38
+nsll, s, 0
+dl, all, , ux, 0
+
+lsel, s, line, , 42
+nsll, s, 0
+dl, all, , ux, 0
+
+allsel
+dtran  ! Transfer geometry based BCs
+!
+allsel
+save, Al_bracket_ext, db
+finish

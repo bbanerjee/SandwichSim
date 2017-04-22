@@ -1,0 +1,34 @@
+resume, ../Al_bracket_act_axial_med, db
+/filname, run_bra_axial_med_nlbuck_b, 0
+
+/solu
+allsel
+antype, static
+nlgeom, on
+autots, on
+sstif, on
+time, 1
+nsubst, 100
+neqit, 20
+nropt, full, , off
+!arclen, on
+solcontrol, on
+outres, all, all
+
+!
+! Apply axial load at end
+!
+seltol, 1.0e-5
+nsel, s, loc, x, xmax_panel
+*get, numNode, node, 0, count
+panel_thick = 2*ymax_panel
+app_force  = 1.0e5 ! 100 kN
+app_pres = app_force/panel_thick
+
+sf, all, pres, app_pres
+
+allsel
+solve
+finish
+
+

@@ -1,0 +1,83 @@
+resume, ../Al_bracket_act_irr, db
+/filname, run_bra_axial_ekill_a, 0
+
+!------------------------------------------
+! First step
+!
+/solu
+
+tot_time = 1
+num_steps = 100
+time_inc = tot_time/num_steps
+max_load = 230855
+load_inc = max_load/num_steps
+
+antype, 0
+rescontrol, define, none
+nlgeom, on
+time,   time_inc
+nropt,  full, , off
+autots, off
+lnsrch, on
+nsubst, 10
+neqit,  20
+outres, all, all
+
+!
+! Apply axial load on end
+!
+seltol, 1.0e-5
+asel, s, mat, , mat_face
+nsla, s, 1
+nsel, r, loc, x, xmax_panel
+
+*get, numNode, node, 0, count
+load_val = load_inc/numNode   
+
+f, all, fx, -load_val
+
+allsel
+solve
+finish
+
+/post1
+set, last
+etable, stress, s, xy
+esel, s, etab, stress, 9.65e6
+esel, r, mat, , mat_adh
+finish
+
+*do, ii, 2, num_steps
+   /solu
+   time = ii*time_inc
+   antype,, rest
+   nsubst, 10
+   neqit,  20
+   outres, all, all
+   ekill, all
+   esel, all
+   !
+   ! Apply axial load at end
+   !
+   seltol, 1.0e-5
+   asel, s, mat, , mat_face
+   nsla, s, 1
+   nsel, r, loc, x, xmax_panel
+
+   *get, numNode, node, 0, count
+   load_val = ii*load_inc/numNode   
+
+   f, all, fx, -load_val
+   allsel
+   solve
+   finish
+
+   /post1
+   set, last
+   etable, stress, s, xy
+   esel, s, etab, stress, 9.65e6
+   esel, r, mat, , mat_adh
+   finish
+
+*end do
+allsel

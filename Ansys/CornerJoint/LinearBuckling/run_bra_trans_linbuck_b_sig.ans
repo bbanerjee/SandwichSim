@@ -1,0 +1,21 @@
+resume, ../Al_bracket_upd, db
+/filname, run_bra_trans_linbuck_b_sig, 0
+
+/solu
+allsel
+antype, static
+
+!
+! Apply transverse load
+!
+seltol, 1.0e-5
+nsel, s, loc, y, ymax_panel
+nsel, r, loc, x, xbot_support, xmax_panel
+*get, numNode, node, 0, count
+load_val = 31837.0/numNode   
+f, all, fy, -load_val
+allsel
+
+solve
+finish
+

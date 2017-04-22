@@ -1,0 +1,118 @@
+resume, ../Al_bracket_act_irr, db
+/filname, run_bra_mom_ekill_a, 0
+
+!------------------------------------------
+! First step
+!
+/solu
+
+tot_time = 1
+num_steps = 100
+time_inc = tot_time/num_steps
+max_load = 20370
+load_inc = max_load/num_steps
+
+antype, 0
+rescontrol, define, none
+nlgeom, on
+time,   time_inc
+nropt,  full, , off
+autots, off
+lnsrch, on
+nsubst, 10
+neqit,  20
+outres, all, all
+
+!
+! Apply moment at end
+!
+seltol, 1.0e-5
+asel, s, mat, , mat_face
+nsla, s, 1
+nsel, r, loc, x, xmax_panel
+
+! Begin of equation: P*(2*({Y}-Y1)/(Y2-Y1) - 1)
+load_val = load_inc   
+*dim, load_dist, table,6,9,1,,,,0
+*set, load_dist(0,0,1), 0.0, -999
+*set, load_dist(2,0,1), 0.0
+*set, load_dist(3,0,1), load_val
+*set, load_dist(4,0,1), ymin_panel
+*set, load_dist(5,0,1), ymax_panel
+*set, load_dist(6,0,1), 0.0
+*set, load_dist(0,1,1), 1.0, -1, 0, 1, 3, 2, 18
+*set, load_dist(0,2,1), 0.0, -2, 0, 2, 0, 0, -1
+*set, load_dist(0,3,1),   0, -3, 0, 1, -2, 3, -1
+*set, load_dist(0,4,1), 0.0, -1, 0, 1, 19, 2, 18
+*set, load_dist(0,5,1), 0.0, -2, 0, 1, -3, 4, -1
+*set, load_dist(0,6,1), 0.0, -1, 0, 1, 0, 0, -2
+*set, load_dist(0,7,1), 0.0, -3, 0, 1, -2, 2, -1
+*set, load_dist(0,8,1), 0.0, -1, 0, 1, 17, 3, -3
+*set, load_dist(0,9,1), 0.0, 99, 0, 1, -1, 0, 0
+! End of equation: P*(2*({Y}-Y1)/(Y2-Y1) - 1)
+f, all, fx, %load_dist%
+
+allsel
+solve
+finish
+
+/post1
+set, last
+etable, stress, s, xy
+esel, s, etab, stress, 9.65e6
+esel, r, mat, , mat_adh
+finish
+
+*do, ii, 2, num_steps
+   /solu
+   time = ii*time_inc
+   antype,, rest
+   nsubst, 10
+   neqit, 20
+   outres, all, all
+   ekill, all
+   esel, all
+   
+   !
+   ! Apply moment at end
+   !
+   seltol, 1.0e-5
+   asel, s, mat, , mat_face
+   nsla, s, 1
+   nsel, r, loc, x, xmax_panel
+   
+   ! Begin of equation: P*(2*({Y}-Y1)/(Y2-Y1) - 1)
+   load_val = ii*load_inc   
+   *del, load_dist
+   *dim, load_dist, table,6,9,1,,,,0
+   *set, load_dist(0,0,1), 0.0, -999
+   *set, load_dist(2,0,1), 0.0
+   *set, load_dist(3,0,1), load_val
+   *set, load_dist(4,0,1), ymin_panel
+   *set, load_dist(5,0,1), ymax_panel
+   *set, load_dist(6,0,1), 0.0
+   *set, load_dist(0,1,1), 1.0, -1, 0, 1, 3, 2, 18
+   *set, load_dist(0,2,1), 0.0, -2, 0, 2, 0, 0, -1
+   *set, load_dist(0,3,1),   0, -3, 0, 1, -2, 3, -1
+   *set, load_dist(0,4,1), 0.0, -1, 0, 1, 19, 2, 18
+   *set, load_dist(0,5,1), 0.0, -2, 0, 1, -3, 4, -1
+   *set, load_dist(0,6,1), 0.0, -1, 0, 1, 0, 0, -2
+   *set, load_dist(0,7,1), 0.0, -3, 0, 1, -2, 2, -1
+   *set, load_dist(0,8,1), 0.0, -1, 0, 1, 17, 3, -3
+   *set, load_dist(0,9,1), 0.0, 99, 0, 1, -1, 0, 0
+   ! End of equation: P*(2*({Y}-Y1)/(Y2-Y1) - 1)
+   f, all, fx, %load_dist%
+   
+   allsel
+   solve
+   finish
+   
+   /post1
+   set, last
+   etable, stress, s, xy
+   esel, s, etab, stress, 9.65e6
+   esel, r, mat, , mat_adh
+   finish
+
+*end do
+allsel

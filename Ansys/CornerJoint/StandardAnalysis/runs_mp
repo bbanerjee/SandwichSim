@@ -1,0 +1,14 @@
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl < run_Al_bracket.ans > run_Al_bracket.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl < run_Al_bracket_rot.ans > run_Al_bracket_rot.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl < run_Al_bracket_act.ans > run_Al_bracket_act.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl < run_Al_bracket_act_nl.ans > run_Al_bracket_act_nl.out 2>& 1
+/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl < run_Al_bracket_act_4n_nl.ans > run_Al_bracket_act_4n_nl.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl < run_Al_bracket_act_mom.ans > run_Al_bracket_act_mom.out 2>& 1
+#
+/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j Al_bracket_act_axial < Al_bracket_act_axial.ans > Al_bracket_act_axial.out 2>& 1
+/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j Al_bracket_act_axial_med < Al_bracket_act_axial_med.ans > Al_bracket_act_axial_med.out 2>& 1
+/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j Al_bracket_act_mom < Al_bracket_act_mom.ans > Al_bracket_act_mom.out 2>& 1
+/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j Al_bracket_actual < Al_bracket_actual.ans > Al_bracket_actual.out 2>& 1
+/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j Al_bracket < Al_bracket.ans > Al_bracket.out 2>& 1
+/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j Al_bracket_rot < Al_bracket_rot.ans > Al_bracket_rot.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j Al_bracket_actual_4n < Al_bracket_actual_4n.ans > Al_bracket_actual_4n.out 2>& 1

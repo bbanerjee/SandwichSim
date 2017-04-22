@@ -1,0 +1,7 @@
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j run_Al_bra_act_mom_linbuck < run_Al_bra_act_mom_linbuck.ans > run_Al_bra_act_mom_linbuck.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j run_Al_bra_linbuck < run_bra_linbuck.ans > run_bra_linbuck.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j run_Al_bra_axial_med_linbuck_a < run_bra_axial_med_linbuck_a.ans > run_bra_axial_med_linbuck_a.out 2>& 1
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j run_Al_bra_mom_linbuck_a < run_bra_mom_linbuck_a.ans > run_bra_mom_linbuck_a.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j run_Al_bra_axial_linbuck_a < run_bra_axial_linbuck_a.ans > run_bra_axial_linbuck_a.out 2>& 1
+/ansys_inc/v110/ansys/bin/ansys110 -b -p ane3fl -j run_Al_bra_trans_linbuck_a < run_bra_trans_linbuck_a.ans > run_bra_trans_linbuck_a.out 2>& 1

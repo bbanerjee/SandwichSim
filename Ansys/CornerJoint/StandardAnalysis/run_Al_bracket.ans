@@ -1,0 +1,19 @@
+resume, Al_bracket, db
+/filname, run_Al_Bracket, 0
+
+/prep7
+!
+! Apply displacement load
+!
+seltol, 1.0e-5
+lsel, s, loc, y, ymax_panel
+lsel, r, loc, x, xbot_support, xmax_panel
+dl, all, , uy, -top_disp_max*0.01
+allsel
+dtran  ! Transfer geometry based BCs
+
+/solu
+allsel
+solve
+save, run_Al_Bracket, db
+finish

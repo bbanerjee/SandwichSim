@@ -1,0 +1,34 @@
+resume, AlBracket, db
+/filname, run_AlBracket_trans_nlb_b, 0
+
+/solu
+allsel
+antype, static
+nlgeom, on
+autots, on
+solcontrol, on
+!arclen, on
+nropt, full, , off
+time, 1
+!nsubst, 1000
+!neqit, 30
+cnvtol, f, , 0.1, , 1.0e-4
+deltime, 0.001, 0.00001, 0.002
+neqit, 60
+outres, all, all
+
+!
+! Apply transverse load
+!
+seltol, 1.0e-5
+nsel, s, loc, y, ymax_panel
+nsel, r, loc, x, xbot_support, xmax_panel
+*get, numNode, node, 0, count
+load_val = 31837/numNode   
+f, all, fy, -load_val
+allsel
+
+solve
+finish
+
+

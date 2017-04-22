@@ -1,0 +1,51 @@
+resume, ../Al_bracket_upd, db
+/filname, run_bra_axial_nl_plas_a, 0
+
+/prep7
+allsel
+insert_sigy = 300e6
+insert_hard = 500e6
+tb, bkin, mat_insert
+tbdata, 1, insert_sigy, insert_hard
+
+!! Remove fixed BC
+!seltol, 1.0e-5
+!*get, ymin_node, node, 0, mnloc, y
+!nsel, s, loc, y, ymin_node
+!dofsel, all
+!ddele, all, all
+!ddele, all, ux
+allsel
+finish
+
+/solu
+allsel
+antype, static
+nlgeom, on
+autots, on
+time, 1
+nsubst, 1000
+neqit, 20
+nropt, full, , off
+solcontrol, on
+outres, all, all
+
+!
+! Apply moment at end
+!
+seltol, 1.0e-5
+asel, s, mat, , mat_face
+nsla, s, 1
+nsel, r, loc, x, xmax_panel
+
+!nsel, s, loc, x, xmax_panel+face_thick
+
+*get, numNode, node, 0, count
+load_val = 230855/numNode   
+
+f, all, fx, -load_val
+
+allsel
+solve
+finish
+

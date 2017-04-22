@@ -1,0 +1,34 @@
+resume, ../Al_bracket_act, db
+/filname, run_bra_axial_nlbuck_a, 0
+
+/solu
+allsel
+antype, static
+nlgeom, on
+autots, on
+solcontrol, on
+nropt, full, , off
+time, 1
+nsubst, 1000
+neqit, 20
+outres, all, all
+
+!
+! Apply moment at end
+!
+seltol, 1.0e-5
+asel, s, mat, , mat_face
+nsla, s, 1
+nsel, r, loc, x, xmax_panel
+
+!nsel, s, loc, x, xmax_panel+face_thick
+
+*get, numNode, node, 0, count
+load_val = 230855/numNode   
+
+f, all, fx, -load_val
+
+allsel
+solve
+finish
+

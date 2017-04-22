@@ -1,0 +1,36 @@
+Internal Joint:
+
+Moment arm = 0.024892 m
+
+Applied force = 
+IntMom20 : 27769 N
+IntMom40 : 55539 N
+IntMom60 : 83308 N
+IntMom80 : 111080 N
+IntMom100 : 138850 N
+
+Applied moments = 
+
+20: 691 Nm
+40: 1383 Nm
+60: 2074 Nm
+80: 2765 Nm
+100: 3456 Nm
+
+External Joint:
+
+Moment arm = 0.024892 m
+
+Applied force = 
+
+20: 31556 N
+40: 63112 N
+50: 78890 N
+60: 94668 N
+
+Applied moments =
+
+20: 786 Nm
+40: 1571 Nm
+50: 1964 Nm
+60: 2357 Nm

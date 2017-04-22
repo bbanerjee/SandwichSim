@@ -1,0 +1,62 @@
+#
+# Create geometry
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j Al_bracket_upd < Al_bracket_upd.ans > Al_bracket_upd.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j AlBracket < AlBracket.ans > AlBracket.out 2>& 1
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < run_bra_axial_med_nlbuck_a.ans > run_bra_axial_med_nlbuck_a.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < run_bra_axial_med_nlbuck_b.ans > run_bra_axial_med_nlbuck_b.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < run_bra_mom_nlbuck_a.ans > run_bra_mom_nlbuck_a.out 2>& 1
+#
+# With plasticity
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_axial_nl_plas_a < run_bra_axial_nl_plas_a.ans > run_bra_axial_nl_plas_a.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_axial_nl_plas_b < run_bra_axial_nl_plas_b.ans > run_bra_axial_nl_plas_b.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_axial_nl_plas_b_res < run_bra_axial_nl_plas_b_res.ans > run_bra_axial_nl_plas_b_res.out 2>& 1
+
+#
+# _a == Symmmetry boundary conditions + half bracket
+# _b == Clamped boundary conditions + full bracket
+#
+# Axial loading (short)
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_axial_nlbuck_a <  run_bra_axial_nlbuck_a.ans > run_bra_axial_nlbuck_a.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_axial_nlbuck_b <  run_bra_axial_nlbuck_b.ans > run_bra_axial_nlbuck_b.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_AlBracket_axial_nlb_b <  run_AlBracket_axial_nlb_b.ans > run_AlBracket_axial_nlb_b.out 2>& 1
+#
+# Axial loading (long)
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_axial_med_nlb_a <  run_bra_axial_med_nlb_a.ans > run_bra_axial_med_nlb_a.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_axial_med_nlb_b <  run_bra_axial_med_nlb_b.ans > run_bra_axial_med_nlb_b.out 2>& 1
+#
+# Moment loading (short)
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_mom_nlbuck_a <  run_bra_mom_nlbuck_a.ans > run_bra_mom_nlbuck_a.out 2>& 1
+/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_mom_nlbuck_b <  run_bra_mom_nlbuck_b.ans > run_bra_mom_nlbuck_b.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_AlBracket_mom_nlb_b <  run_AlBracket_mom_nlb_b.ans > run_AlBracket_mom_nlb_b.out 2>& 1
+#
+# Moment loading (long)
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_mom_med_nlb_a <  run_bra_mom_med_nlb_a.ans > run_bra_mom_med_nlb_a.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_mom_med_nlb_b <  run_bra_mom_med_nlb_b.ans > run_bra_mom_med_nlb_b.out 2>& 1
+#
+# Transverse loading (short)
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_trans_nlbuck_a <  run_bra_trans_nlbuck_a.ans > run_bra_trans_nlbuck_a.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_trans_nlbuck_b <  run_bra_trans_nlbuck_b.ans > run_bra_trans_nlbuck_b.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_AlBracket_trans_nlb_b <  run_AlBracket_trans_nlb_b.ans > run_AlBracket_trans_nlb_b.out 2>& 1
+#
+# Transverse loading (long)
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_trans_med_nlb_a <  run_bra_trans_med_nlb_a.ans > run_bra_trans_med_nlb_a.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_trans_med_nlb_b <  run_bra_trans_med_nlb_b.ans > run_bra_trans_med_nlb_b.out 2>& 1
+#
+# External insert (short)
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_ext_axial_nlbuck_b <  run_ext_axial_nlbuck_b.ans > run_ext_axial_nlbuck_b.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_ext_mom_nlbuck_b <  run_ext_mom_nlbuck_b.ans > run_ext_mom_nlbuck_b.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_ext_trans_nlbuck_b <  run_ext_trans_nlbuck_b.ans > run_ext_trans_nlbuck_b.out 2>& 1
+#
+# Restart
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j res_ext_mom_nlbuck_b <  res_ext_mom_nlbuck_b.ans > res_ext_mom_nlbuck_b.out 2>& 1

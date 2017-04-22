@@ -1,0 +1,42 @@
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < run_Al_bra_act_mom_linbuck.ans > run_Al_bra_act_mom_linbuck.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < run_bra_linbuck.ans > run_bra_linbuck.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < run_bra_axial_med_linbuck_a.ans > run_bra_axial_med_linbuck_a.out 2>& 1
+#
+# Half bracket (symmetry)
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < run_bra_mom_linbuck_a.ans > run_bra_mom_linbuck_a.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < run_bra_axial_linbuck_a.ans > run_bra_axial_linbuck_a.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba < run_bra_trans_linbuck_a.ans > run_bra_trans_linbuck_a.out 2>& 1
+#
+# Full bracket (clamped)
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_bra_mom_linbuck_b < run_bra_mom_linbuck_b.ans > run_bra_mom_linbuck_b.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_bra_axial_linbuck_b < run_bra_axial_linbuck_b.ans > run_bra_axial_linbuck_b.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_bra_trans_linbuck_b < run_bra_trans_linbuck_b.ans > run_bra_trans_linbuck_b.out 2>& 1
+#
+# Half bracket (symmetry) + Long panel
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_bra_mom_med_lb_a < run_bra_mom_med_lb_a.ans > run_bra_mom_med_lb_a.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_bra_axial_med_lb_a < run_bra_axial_med_lb_a.ans > run_bra_axial_med_lb_a.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_bra_trans_med_lb_a < run_bra_trans_med_lb_a.ans > run_bra_trans_med_lb_a.out 2>& 1
+#
+# Full bracket (Clamped) + Long panel
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_bra_mom_med_lb_b < run_bra_mom_med_lb_b.ans > run_bra_mom_med_lb_b.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_bra_axial_med_lb_b < run_bra_axial_med_lb_b.ans > run_bra_axial_med_lb_b.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_bra_trans_med_lb_b < run_bra_trans_med_lb_b.ans > run_bra_trans_med_lb_b.out 2>& 1
+#
+# Full external bracket (clamped)
+#
+/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_ext_mom_linbuck_b < run_ext_mom_linbuck_b.ans > run_ext_mom_linbuck_b.out 2>& 1
+/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_ext_axial_linbuck_b < run_ext_axial_linbuck_b.ans > run_ext_axial_linbuck_b.out 2>& 1
+/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_ext_trans_linbuck_b < run_ext_trans_linbuck_b.ans > run_ext_trans_linbuck_b.out 2>& 1
+#
+# Calculate stresses based on calculated buckling loads using linear analysis
+#
+# /ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_axial_linbuck_b_sig < run_bra_axial_linbuck_b_sig.ans > run_bra_axial_linbuck_b_sig.out 2>& 1
+# /ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_axial_med_lb_b_sig < run_bra_axial_med_lb_b_sig.ans > run_bra_axial_med_lb_b_sig.out 2>& 1
+# /ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_mom_linbuck_b_sig < run_bra_mom_linbuck_b_sig.ans > run_bra_mom_linbuck_b_sig.out 2>& 1
+# /ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_mom_med_lb_b_sig < run_bra_mom_med_lb_b_sig.ans > run_bra_mom_med_lb_b_sig.out 2>& 1
+# /ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_trans_linbuck_b_sig. <run_bra_trans_linbuck_b_sig.ans > run_bra_trans_linbuck_b_sig.out 2>& 1
+# /ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_trans_med_lb_b_sig < run_bra_trans_med_lb_b_sig.ans > run_bra_trans_med_lb_b_sig.out 2>& 1

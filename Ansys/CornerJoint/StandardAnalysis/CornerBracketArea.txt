@@ -1,0 +1,18 @@
+
+ LIST ALL SELECTED AREAS.
+ NUMBER LOOP  LINES                     AREA       ELEM SIZE    #NODES  #ELEM    MAT   REAL   TYP  ESYS   SECN
+      2  1     75     73     68     65  0.7141       0.000           0      0      0      0     0     0      0
+               62     59     56     53
+               50     49     46     41
+               40     37     32     29
+               26     22     17     14
+               11     10      5      2
+         2     91     94     95     98
+               77     84
+         3    109    106    101    131
+              127    122    118    113
+         4    145    142    137    165
+              161    156    152    147
+
+
+

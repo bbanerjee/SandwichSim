@@ -1,0 +1,77 @@
+!filename = 'run_bra_axial_nlbuck_a'
+! filename = 'run_bra_axial_nlbuck_b'
+! filename = 'run_bra_axial_med_nlb_a'
+! filename = 'run_bra_axial_med_nlb_b'
+! filename = 'run_bra_mom_nlbuck_a'
+! filename = 'run_bra_mom_nlbuck_b'
+! filename = 'run_bra_mom_med_nlb_a'
+! filename = 'run_bra_mom_med_nlb_b'
+! filename = 'run_bra_trans_nlbuck_a'
+! filename = 'run_bra_trans_nlbuck_b'
+! filename = 'run_bra_trans_med_nlb_a'
+! filename = 'run_bra_trans_med_nlb_b'
+!RESUME, filename,'db','',,
+!filename = 'run_bra_axial_nlbuck_a'
+! filename = 'run_bra_axial_nlbuck_b'
+! filename = 'run_bra_axial_med_nlb_a'
+! filename = 'run_bra_axial_med_nlb_b'
+! filename = 'run_bra_mom_nlbuck_a'
+! filename = 'run_bra_mom_nlbuck_b'
+! filename = 'run_bra_mom_med_nlb_a'
+! filename = 'run_bra_mom_med_nlb_b'
+! filename = 'run_bra_trans_nlbuck_a'
+! filename = 'run_bra_trans_nlbuck_b'
+! filename = 'run_bra_trans_med_nlb_a'
+! filename = 'run_bra_trans_med_nlb_b'
+!/POST1
+!FILE, filename, rst,
+SET,LAST
+!*
+/PSF,DEFA, ,1,0,1
+/PBF,DEFA, ,1
+!/PIC,DEFA, ,1
+/PSYMB,CS,0
+/PSYMB,NDIR,0
+/PSYMB,ESYS,0
+/PSYMB,LDIV,0
+/PSYMB,LDIR,0
+/PSYMB,ADIR,0
+/PSYMB,ECON,0
+/PSYMB,XNODE,0
+/PSYMB,DOT,1
+/PSYMB,PCONV,
+/PSYMB,LAYR,0
+/PSYMB,FBCS,0
+!*
+/PBC,ALL,,1
+/PBC,NFOR,,0
+/PBC,NMOM,,0
+/PBC,RFOR,,0
+/PBC,RMOM,,0
+/PBC,PATH,,0
+/REP
+!*
+/RGB,INDEX,100,100,100, 0
+/RGB,INDEX, 80, 80, 80,13
+/RGB,INDEX, 60, 60, 60,14
+/RGB,INDEX, 0, 0, 0,15
+/REPLOT
+/PLOPTS,INFO,3
+/PLOPTS,LEG1,1
+/PLOPTS,LEG2,1
+/PLOPTS,LEG3,1
+/PLOPTS,FRAME,1
+/PLOPTS,TITLE,1
+/PLOPTS,MINM,1
+/PLOPTS,FILE,0
+/PLOPTS,LOGO,1
+/PLOPTS,WINS,1
+/PLOPTS,WP,0
+/PLOPTS,DATE,2
+/TRIAD,LBOT
+/REPLOT
+!*
+!*
+/EFACET,1
+!PLNSOL, U,Y, 0,1.0
+!PLNSOL, S,XY, 0,1.0 

@@ -1,0 +1,70 @@
+! Extract stresses in adhesive as afunction of time
+!
+/post1
+/uis, msgpop, 3
+
+!----------------------------------------------------------------
+! Open the results file and a file for writing results
+!----------------------------------------------------------------
+!file,'Al_bracket_ax_lessshort_f','rst','.'  
+!*cfopen, AxLessShort_f_Adh, dat
+file,'Al_bracket_ax_lessshort','rst','.'  
+*cfopen, AxLessShort_Disp, dat
+
+!----------------------------------------------------------------
+! Choose the first set
+!----------------------------------------------------------------
+allsel
+set, first
+
+!----------------------------------------------------------------
+! Select nodes in the cap and create a component
+!----------------------------------------------------------------
+seltol, 1.0e-5
+asel, s, mat, , mat_cap
+nsla, s, 1
+nsel, r, loc, x, xmax_panel+face_thick
+cm, dispNode, node
+*get, minNode, node, 0, num, min
+
+!----------------------------------------------------------------
+! Get the number of steps in the data file
+! and Loop through the steps
+!----------------------------------------------------------------
+*get, numStep, active, 0, set, nset
+
+!----------------------------------------------------------------
+! Loop through the steps
+!----------------------------------------------------------------
+*dim, dispCap, array, 1
+*do, jj, 1, numStep
+
+  !----------------------------------------------------------------
+  ! Get the current time
+  !----------------------------------------------------------------
+  *get, curTime, active, 0, set, time
+
+  !----------------------------------------------------------------
+  ! Get the nodal displacement
+  !----------------------------------------------------------------
+  allsel
+  cmsel, s, dispNode, node
+  *get, dispCap(1), node, minNode, u, x
+
+  !----------------------------------------------------------------
+  ! Write the element data
+  !----------------------------------------------------------------
+  *vwrite, minNode, curTime, dispCap(1)
+  (f6.0,1x,e16.7,1x,e16.7)
+
+  !----------------------------------------------------------------
+  ! Go to next set
+  !----------------------------------------------------------------
+  set, next
+*end do
+
+!----------------------------------------------------------------
+! Close the file
+!----------------------------------------------------------------
+*cfclose
+

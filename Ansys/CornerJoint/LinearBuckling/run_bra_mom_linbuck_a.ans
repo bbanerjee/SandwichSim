@@ -1,0 +1,49 @@
+resume, ../Al_bracket_act, db
+/filname, run_bra_mom_linbuck_a, 0
+
+/solu
+allsel
+antype, static
+pstres, on
+
+!
+! Apply moment at end
+!
+seltol, 1.0e-5
+asel, s, mat, , mat_face
+nsla, s, 1
+nsel, r, loc, x, xmax_panel
+
+! Begin of equation: P*(2*({Y}-Y1)/(Y2-Y1) - 1)
+!load_val = 1   ! 1 kN
+load_val = 20371   ! 1 kN
+*dim, load_dist, table,6,9,1,,,,0
+*set, load_dist(0,0,1), 0.0, -999
+*set, load_dist(2,0,1), 0.0
+*set, load_dist(3,0,1), load_val
+*set, load_dist(4,0,1), ymin_panel
+*set, load_dist(5,0,1), ymax_panel
+*set, load_dist(6,0,1), 0.0
+*set, load_dist(0,1,1), 1.0, -1, 0, 1, 3, 2, 18
+*set, load_dist(0,2,1), 0.0, -2, 0, 2, 0, 0, -1
+*set, load_dist(0,3,1),   0, -3, 0, 1, -2, 3, -1
+*set, load_dist(0,4,1), 0.0, -1, 0, 1, 19, 2, 18
+*set, load_dist(0,5,1), 0.0, -2, 0, 1, -3, 4, -1
+*set, load_dist(0,6,1), 0.0, -1, 0, 1, 0, 0, -2
+*set, load_dist(0,7,1), 0.0, -3, 0, 1, -2, 2, -1
+*set, load_dist(0,8,1), 0.0, -1, 0, 1, 17, 3, -3
+*set, load_dist(0,9,1), 0.0, 99, 0, 1, -1, 0, 0
+! End of equation: P*(2*({Y}-Y1)/(Y2-Y1) - 1)
+f, all, fx, %load_dist%
+
+allsel
+solve
+finish
+
+/solu
+antype, buckle
+bucopt, lanb, 1
+mxpand, 1
+solve
+finish
+

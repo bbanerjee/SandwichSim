@@ -1,0 +1,124 @@
+! Extract stresses in face compression as afunction of time
+!
+/post1
+/uis, msgpop, 3
+
+!----------------------------------------------------------------
+! Open the results file and a file for writing results
+!----------------------------------------------------------------
+!file,'Al_bracket_ax_lessshort_f','rst','.'  
+!*cfopen, AxLessShort_f_FaceC, dat
+file,'Al_bracket_ax_lessshort','rst','.'  
+*cfopen, AxLessShort_FaceC, dat
+
+!----------------------------------------------------------------
+! Choose the last set
+!----------------------------------------------------------------
+allsel
+set, last
+
+!----------------------------------------------------------------
+! Select nodes in the face area, sort, select max stress elem, 
+! and create a component
+!----------------------------------------------------------------
+esel, s, mat, , mat_face
+etable, stressAll, s, x
+esort, etab, stressAll
+*get, minElem, sort, 0, imin
+esel, r, elem, , minElem
+
+!nsle, s, all
+!nsort, u, y
+!*get, maxDisp, sort, 0, max
+!*get, minDisp, sort, 0, min
+!*get, maxNode, sort, 0, imax
+!*get, minNode, sort, 0, imin
+!nsel, r, node, , maxNode
+!esln, r, 0
+
+cm, elem_face, elem
+*get, numElem, elem, 0, count
+*get, minElem, elem, 0, num, min
+
+!----------------------------------------------------------------
+! Choose the first set
+!----------------------------------------------------------------
+allsel
+set, first
+
+!----------------------------------------------------------------
+! Create an element table
+!----------------------------------------------------------------
+cmsel, s, elem_face, elem
+etable, stress, s, x
+
+!----------------------------------------------------------------
+! Get the number of steps in the data file
+! and Loop through the steps
+!----------------------------------------------------------------
+*get, numStep, active, 0, set, nset
+
+!----------------------------------------------------------------
+! Loop through the steps
+!----------------------------------------------------------------
+*dim, sig_face, array, 1
+*do, jj, 1, numStep
+
+  !----------------------------------------------------------------
+  ! Get the current time
+  !----------------------------------------------------------------
+  *get, curTime, active, 0, set, time
+
+  !----------------------------------------------------------------
+  ! Get the nodal reaction force
+  !----------------------------------------------------------------
+  allsel
+  cmsel, s, end_load, node
+  *get, numNode, node, 0, count
+  *get, curNode, node, 0, num, min
+  sig_tot = 0
+  sig_node = 0
+  *do, ii, 1, numNode
+     *get, sig_node, node, curNode, s, x
+     sig_tot = sig_tot+sig_node
+     *get, curNode, node, curNode, nxth
+  *end do
+  len = ymax_panel_face-ymin_panel_face
+  f_tot = sig_tot*len
+
+  !----------------------------------------------------------------
+  ! Save the time and number of elements
+  !----------------------------------------------------------------
+  allsel
+  cmsel, s, elem_face, elem
+  curElem = minElem
+  *do, ii, 1, numElem
+    !----------------------------------------------------------------
+    ! Read the element data
+    !----------------------------------------------------------------
+    *get, sig_face(1), elem, curElem, etab, stress
+
+    !----------------------------------------------------------------
+    ! Write the element data
+    !----------------------------------------------------------------
+    *vwrite, numElem, curElem, curTime, f_tot, sig_face(1)
+    (f6.0,1x,f6.0,1x,e16.7,1x,e16.7,1x,e16.7)
+
+    !----------------------------------------------------------------
+    ! get the next element
+    !----------------------------------------------------------------
+    *get, curElem, elem, curElem, nxth
+  *enddo
+
+  !----------------------------------------------------------------
+  ! Go to next set and refill etable
+  !----------------------------------------------------------------
+  set, next
+  etable, refl
+*end do
+
+!----------------------------------------------------------------
+! Close the file
+!----------------------------------------------------------------
+*cfclose
+

@@ -1,0 +1,66 @@
+<EquationData ANSYS=110>
+
+<Comments>
+
+</Comments>
+
+   <RegimeParameter>
+      &lt;Regime Var&gt;
+   </RegimeParameter>
+
+   <AngularUnits type="0">
+!      0 = radian, 1 = degrees
+   </AngularUnits>
+   <CoordinateSystem type="0">
+   </CoordinateSystem>
+
+   <FunctionType type="SINGLE">
+   </FunctionType>
+
+   <Regime tab="0">
+      <TabTitle>
+         Function
+      </TabTitle>
+      <Equation>
+          load_val*(2*({Y}-ymin_panel)/(ymax_panel-ymin_panel)-1)
+      </Equation>
+      <MaterialId active="0">
+      </MaterialId>
+      <Constant number="1">
+         load_val
+      </Constant>
+      <Constant number="2">
+         ymin_panel
+      </Constant>
+      <Constant number="3">
+         ymax_panel
+      </Constant>
+   </Regime>
+
+</EquationData>
+
+<!--
+!
+! ANSYS input
+!
+:FUNC
+*DIM,%_FNCNAME%,TABLE,6,9,1,,,,%_FNCCSYS%
+!
+! Begin of equation: load_val*(2*({Y}-ymin_panel)/(ymax_panel-ymin_panel)-1)
+%_FNCNAME%(0,0,1)= 0.0, -999
+%_FNCNAME%(2,0,1)= 0.0
+%_FNCNAME%(3,0,1)= %_FNC_C1(1)%
+%_FNCNAME%(4,0,1)= %_FNC_C2(1)%
+%_FNCNAME%(5,0,1)= %_FNC_C3(1)%
+%_FNCNAME%(6,0,1)= 0.0
+%_FNCNAME%(0,1,1)= 1.0, -1, 0, 1, 3, 2, 18
+%_FNCNAME%(0,2,1)= 0.0, -2, 0, 2, 0, 0, -1
+%_FNCNAME%(0,3,1)=   0, -3, 0, 1, -2, 3, -1
+%_FNCNAME%(0,4,1)= 0.0, -1, 0, 1, 19, 2, 18
+%_FNCNAME%(0,5,1)= 0.0, -2, 0, 1, -3, 4, -1
+%_FNCNAME%(0,6,1)= 0.0, -1, 0, 1, 0, 0, -2
+%_FNCNAME%(0,7,1)= 0.0, -3, 0, 1, -2, 2, -1
+%_FNCNAME%(0,8,1)= 0.0, -1, 0, 1, 17, 3, -3
+%_FNCNAME%(0,9,1)= 0.0, 99, 0, 1, -1, 0, 0
+! End of equation: load_val*(2*({Y}-ymin_panel)/(ymax_panel-ymin_panel)-1)
+!-->

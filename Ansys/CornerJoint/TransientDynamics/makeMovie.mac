@@ -1,0 +1,21 @@
+/post1
+/uis, msgpop, 3
+/plopts, date, 0
+
+!--------------------------------------------
+! Loop through steps
+!--------------------------------------------
+/show, close
+*get, numStep, active, 0, set, nset
+set, first
+*do, ii, 1, numStep
+  plnsol, u, sum
+  /show, png, AdhAxialMov, 0, 8
+  set, next
+*end do
+/show, close
+
+!----------------------------------------
+! To make movie from the frames use something like
+!  ffmpeg -qscale 1 -r 20 -b 9600 -loop_input -i Al_bracket_ax_lessshort%03d.png BracketAxial.mpg
+!  Press q to stop encoding after you're satisfied with the number of loops

@@ -1,0 +1,266 @@
+/title, Aluminum Four Point Bend Test
+/filname, Al_4ptBend, on
+
+!----------------------------
+!  Geometry parameters
+!----------------------------
+panel_len = 20.0e-2
+face_thick = 5.0e-3
+core_thick = 3.0e-2
+adh_thick = 1.0e-3
+insert_len = 5.0e-2
+
+!----------------------------
+! Load parameters
+!----------------------------
+bot_support_loc = 2.0e-2
+top_load_loc = 2.0e-2
+top_disp_max = 1.0e-2
+
+!----------------------------
+! Material parameters and element type
+!----------------------------
+! Face sheet
+!
+type_face = 1
+real_face = 1
+mat_face = 1
+face_E11 = 17.3e9
+face_E22 = 17.3e9
+face_E33 = 3.24e9
+face_G12 = 6.7e9
+face_G23 = 1.2e9
+face_G31 = 1.2e9
+face_nu13 = 0.32
+face_nu12 = face_E11/(2*face_G12)-1
+face_nu21 = face_nu12*face_E22/face_E11
+face_nu31 = face_nu13*face_E33/face_E11
+face_nu32 = face_nu31
+face_nu23 = face_nu32*face_E22/face_E33
+!
+! Honeycomb Core
+!
+type_core = 2
+real_core = 2
+mat_core = 2
+core_E11 = 0.34e6
+core_E22 = 0.48e6
+core_E33 = 132e6
+core_G12 = 4.55e6
+core_G23 = 24.1e6
+core_G31 = 41.4e6
+core_nu13 = 0.01
+core_nu31 = core_nu13*core_E33/core_E11
+core_nu12 = 0.49
+core_nu21 = core_nu12*core_E22/core_E11
+core_nu23 = 0.01
+core_nu32 = core_nu23*core_E33/core_E22
+!
+! Aluminum insert
+!
+type_insert = 3
+real_insert = 3
+mat_insert = 3
+insert_E = 70e9
+insert_nu = 0.35
+!insert_sigy = 
+!insert_hard = 
+!
+! Adhesive layer
+!
+type_adh = 4
+real_adh = 4
+mat_adh = 4
+adh_E = 890e6
+adh_nu = 0.3
+!adh_sigy = 
+!adh_hard = 
+!
+
+/prep7
+
+!----------------------------
+! Create geometry
+!----------------------------
+ymax_panel = core_thick/2+face_thick
+ymin_panel = -ymax_panel
+xmin_panel = 0
+xmax_panel = panel_len/2
+xbot_support = panel_len/2 - bot_support_loc
+xtop_load = insert_len/2 + top_load_loc
+!
+! Create keypoints
+!
+k, 1, xmin_panel, ymin_panel, 0
+k, 2, xmax_panel, ymin_panel, 0
+k, 3, xmin_panel, ymax_panel, 0
+k, 4, xmax_panel, ymax_panel, 0
+
+k, 5, xmin_panel, ymin_panel+face_thick, 0
+k, 6, xmin_panel+insert_len/2+adh_thick, ymin_panel+face_thick, 0
+k, 7, xmax_panel, ymin_panel+face_thick, 0
+k, 8, xmin_panel, ymax_panel-face_thick, 0
+k, 9, xmin_panel+insert_len/2+adh_thick, ymax_panel-face_thick, 0
+k, 10, xmax_panel, ymax_panel-face_thick, 0
+
+k, 11, xmin_panel, ymin_panel+face_thick+adh_thick, 0
+k, 12, xmin_panel+insert_len/2, ymin_panel+face_thick+adh_thick, 0
+k, 13, xmin_panel, ymax_panel-face_thick-adh_thick, 0
+k, 14, xmin_panel+insert_len/2, ymax_panel-face_thick-adh_thick, 0
+
+k, 15, xbot_support, ymin_panel, 0
+k, 16, xtop_load, ymax_panel, 0
+!
+! Create lines
+!
+numstr, line, 10
+numstr, area, 10
+l, 1, 15   ! line 10
+l, 15, 2   ! line 11
+l, 2, 7    ! line 12
+l, 7, 6    ! line 13
+l, 6, 5    ! line 14
+l, 5, 1    ! line 15
+al, all    ! Area 10
+lsel, none
+
+numstr, line, 20
+numstr, area, 20
+l, 3, 16   ! Line 20
+l, 16, 4   ! Line 21
+l, 4, 10   ! Line 22
+l, 10, 9   ! Line 23
+l, 9, 8    ! Line 24
+l, 8, 3    ! Line 25
+al, all    ! Area 20
+lsel, none
+
+numstr, line, 30
+numstr, area, 30
+l, 11, 12  ! Line 30
+l, 12, 14  ! Line 31
+l, 14, 13  ! Line 32
+l, 13, 11  ! Line 33
+al, all    ! Area 30
+allsel
+
+numstr, line, 40
+numstr, area, 40
+l, 5, 11   ! Line 40
+l, 6, 9    ! Line 41
+l, 8, 13   ! Line 42
+l, 7, 10   ! Line 43
+al, 14, 41, 24, 42, 32, 31, 30, 40  ! Area 40
+al, 13, 43, 23, 41                  ! Area 41
+allsel
+
+!----------------------------
+! Create components
+!----------------------------
+asel, s, area,, 10
+asel, a, area,, 20
+cm, face_sheet, area
+
+asel, s, area,, 30
+cm, insert, area
+
+asel, s, area,, 40
+cm, adhesive, area
+
+asel, s, area,, 41
+cm, core, area
+allsel
+
+!----------------------------
+! Element types
+!----------------------------
+et, type_face, plane183
+keyopt, type_face, 3, 5   ! generalized plane strain
+r, real_face
+
+et, type_core, plane183
+keyopt, type_core, 3, 5   ! generalized plane strain
+r, real_core
+
+et, type_insert, plane183
+keyopt, type_insert, 3, 5   ! generalized plane strain
+r, real_insert
+
+et, type_adh, plane183
+keyopt, type_adh, 3, 5   ! generalized plane strain
+r, real_adh
+
+!----------------------------
+! Material properties
+!----------------------------
+! Face sheets
+!
+mp, ex,   mat_face, face_E11
+mp, ey,   mat_face, face_E33
+mp, ez,   mat_face, face_E22
+mp, prxy, mat_face, face_nu13
+mp, pryz, mat_face, face_nu23
+mp, prxz, mat_face, face_nu12
+mp, gxy,  mat_face, face_G31
+mp, gyz,  mat_face, face_G23
+mp, gxz,  mat_face, face_G12
+!
+! Core
+!
+mp, ex,   mat_core, core_E11
+mp, ey,   mat_core, core_E33
+mp, ez,   mat_core, core_E22
+mp, nuxy, mat_core, core_nu13
+mp, nuyz, mat_core, core_nu23
+mp, nuxz, mat_core, core_nu12
+mp, gxy,  mat_core, core_G31
+mp, gyz,  mat_core, core_G23
+mp, gxz,  mat_core, core_G12
+!
+! Inserts
+!
+mp, ex, mat_insert, insert_E
+mp, prxy, mat_insert, insert_nu
+!
+! Adhesive
+!
+mp, ex, mat_adh, adh_E
+mp, prxy, mat_adh, adh_nu
+
+!----------------------------
+! Assign material and element to areas
+!----------------------------
+cmsel, s, face_sheet
+aatt, mat_face, real_face, type_face
+cmsel, s, core
+aatt, mat_core, real_core, type_core
+cmsel, s, insert
+aatt, mat_insert, real_insert, type_insert
+cmsel, s, adhesive
+aatt, mat_adh, real_adh, type_adh
+allsel
+
+!----------------------------
+! Keypoint boundary conditions
+!----------------------------
+ksel, s, loc, , xbot_support
+dk, all, uz, 0
+ksel, s, loc, , xtop_load
+dk, all, uz, -top_disp_max
+allsel
+
+!----------------------------
+! Mesh areas
+!----------------------------
+smrtsize, 1
+mshkey, 2
+amesh, all
+
+!----------------------------
+! Nodal boundary conditions
+!----------------------------
+nsel, s, loc, x, 0.0
+d, all, ux, 0.0
+allsel
+dtran
+

@@ -1,0 +1,29 @@
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_bracket_act_mom_ek_hi < run_Al_bracket_act_mom_ek_hi.ans > run_Al_bracket_act_mom_ek_hi.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_Al_bracket_act_mom_ekill < run_Al_bracket_act_mom_ekill.ans > run_Al_bracket_act_mom_ekill.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_axial_fine_ekill  < run_bra_axial_fine_ekill.ans  > run_bra_axial_fine_ekill.out  2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_mom_fine_ekill < run_bra_mom_fine_ekill.ans > run_bra_mom_fine_ekill.out 2>& 1
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_trans_fine_ekill < run_bra_trans_fine_ekill.ans > run_bra_trans_fine_ekill.out 2>& 1
+#
+# Axial loading (Adhesive failure)
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_axial_ekill_a  < run_bra_axial_ekill_a.ans  > run_bra_axial_ekill_a.out  2>& 1
+#
+# Axial loading (Core failure)
+#
+#/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_axial_ekill_a_core  < run_bra_axial_ekill_a_core.ans  > run_bra_axial_ekill_a_core.out  2>& 1
+#
+# Moment loading (Adhesive failure)
+#
+/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_mom_ekill_a < run_bra_mom_ekill_a.ans > run_bra_mom_ekill_a.out 2>& 1
+#
+# Moment loading (Core failure)
+#
+#/ansys_inc/v121/ansys/bin/ansys121 -b -p ane3fl -j run_bra_mom_ekill_a_core  < run_bra_mom_ekill_a_core.ans  > run_bra_mom_ekill_a_core.out  2>& 1
+#
+# Transverse loading (Adhesive failure)
+#
+/ansys_inc/v110/ansys/bin/ansys110 -b -p stba -j run_bra_trans_ekill_a < run_bra_trans_ekill_a.ans > run_bra_trans_ekill_a.out 2>& 1
+#
+# Transverse loading (Core failure)
+#
+#/ansys_inc/v121/ansys/bin/ansys121 -b -p ane3fl -j run_bra_trans_ekill_a_core  < run_bra_trans_ekill_a_core.ans  > run_bra_trans_ekill_a_core.out  2>& 1

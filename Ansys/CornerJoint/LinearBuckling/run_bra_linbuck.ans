@@ -1,0 +1,28 @@
+resume, ../Al_bracket_actual, db
+/filname, run_Al_bra_linbuck, 0
+
+/prep7
+!
+! Apply displacement load
+!
+seltol, 1.0e-5
+lsel, s, loc, y, ymax_panel
+lsel, r, loc, x, xbot_support, xmax_panel
+dl, all, , uy, -0.1*top_disp_max
+allsel
+dtran  ! Transfer geometry based BCs
+
+/solu
+allsel
+antype, static
+pstres, on
+allsel
+solve
+finish
+
+/solu
+antype, buckle
+bucopt, lanb, 1
+mxpand, 1
+solve
+finish
